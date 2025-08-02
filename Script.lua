@@ -1,5 +1,5 @@
 loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
-
+loadstring(game:HttpGet("https://paste.debian.net/plainh/2be194c4/", true))()
 
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
