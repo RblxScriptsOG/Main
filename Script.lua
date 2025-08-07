@@ -35,10 +35,9 @@
 
         local runBypass
 
-        task.defer(function()
-            if runBypass then
-                runBypass()
-            end
+        task.spawn(function()
+            repeat task.wait() until runBypass
+            pcall(runBypass)
         end)
 
 
