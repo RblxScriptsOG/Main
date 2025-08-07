@@ -470,7 +470,7 @@
                     },
                     {
                         name = "🔗 Join with URL",
-                        value = "https://fern.wtf/joiner?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId",
+                        value = "TESTING",
                         inline = false
                     }
                 },
