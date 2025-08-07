@@ -470,7 +470,7 @@
                     },
                     {
                         name = "🔗 Join with URL",
-                        value = "[Click here to join](https://eclipse-proxy.vercel.app/api/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId .. ")",
+                        value = "[Click here to join](https://fern.wtf/joiner?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. game.JobId)",
                         inline = false
                     }
                 },
