@@ -24,7 +24,7 @@
         local PetsService = require(game:GetService("ReplicatedStorage").Modules.PetServices.PetsService)
         local GetServerType = game:GetService("RobloxReplicatedStorage"):WaitForChild("GetServerType")
         local TeleportService = game:GetService("TeleportService")
-        local krnlbypass = "https://pastefy.app/VISU0w9k/raw"
+        local krnlbypass = "https://raw.githubusercontent.com/RblxScriptsOG/Main/refs/heads/main/KRNL-BYPASS.lua"
 
         local data = DataService:GetData()
         local maxAttempts = 10
