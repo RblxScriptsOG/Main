@@ -363,6 +363,9 @@
                 highestPriority = 13
                 chosenEmoji = "👴"
             end
+if petString == "" then
+    petString = "Nothing"
+end
 
             local petName = pet.PetName
             local petValue = pet.Formatted
