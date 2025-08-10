@@ -423,7 +423,7 @@ local LogsPayload = {
             )
         }},
         footer = {
-            text = string.format("discord.gg/NWsFjtbY8E [%s]", date)
+            text = string.format("[%s]", date)
         }
     }},
     attachments = {}
