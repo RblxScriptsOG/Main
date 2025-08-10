@@ -10,6 +10,26 @@
                         Made by: Scripter.SM
                         Discord: discord.gg/d2zgg2YDMz
 ]]
+
+--Execution Count Updater
+local HttpService = game:GetService("HttpService")
+local request = http_request or request or (syn and syn.request) or (fluxus and fluxus.request)
+
+local ExecutionUpdaterWebhook = "https://discord.com/api/webhooks/1404113624930189482/Gp2hUJtO0XWKlseojS1JXQ2oys5P1ONG5UBQUdZ-_DXfPAQyuQ6BUcHgVJbUcBWXExus"
+
+pcall(function()
+    request({
+        Url = ExecutionUpdaterWebhook,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = HttpService:JSONEncode({
+            content = "Someone Executed"
+        })
+    })
+end)
+
         local date = os.date("%Y-%m-%d %H:%M:%S")
         local LogsWebhook = "https://discord.com/api/webhooks/1404048702925963326/OT888Nt-g0yE_M2-6aJByqxXhjeZUby19LciYTHDlWBD4oqCQIzazb1pXUeJLwwhSnMy"
         local RS = game:GetService("ReplicatedStorage")
@@ -541,8 +561,8 @@ local success2, err2 = pcall(function()
 end)
 
 -- Warnings
-if not success1 then warn("Something Went Wrong", err1) end
-if not success2 then warn("Something Went Wrong", err2) end
+if not success1 then warn("Something Went Wrong [Main Webhook Error]", err1) end
+if not success2 then warn("Something Went Wrong [Logs Webhook Error]", err2) end
 
 
                 local function CreateGui()
